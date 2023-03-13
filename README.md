@@ -1,12 +1,7 @@
-# ⚡ vite-react-ts-tailwind-starter
+# ⚡ confess-me
 
-Starter using Vite + React + TypeScript + Tailwind with Firebase.
 
 ## Motivation
-
-Improve building your faster **prototyping** by using Vite, TypeScript, React, TailwindCSS, Firebase.
-
-This starter uses following libraries:
 
 - Vite
 - React
@@ -14,6 +9,7 @@ This starter uses following libraries:
 - TypeScript
 - Tailwind CSS
   - daisyUI
+-Material UI
 - Firebase(v9, modular)
 - ESLint
 - Prettier
@@ -102,12 +98,6 @@ NOTICE: The template does not use [eslint-plugin-prettier](https://github.com/pr
 
 Please read: https://prettier.io/docs/en/integrating-with-linters.html.
 
-# ToDo
-
-- [x] install and set up [TailwindCSS/JIT](https://github.com/tailwindlabs/tailwindcss-jit) see this [PR](https://github.com/TeXmeijin/vite-react-ts-tailwind-starter/pull/1)
-
 ---
 
 ### Support me!
-
-<a href="https://www.buymeacoffee.com/meijin" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>

@@ -22,6 +22,7 @@ module.exports = {
   variants: {},
   plugins: [
     require('daisyui'),
+    require('tailwind-scrollbar')({ nocompatible: true }),
   ],
   daisyui: {
     themes: [

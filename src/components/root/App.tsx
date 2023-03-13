@@ -1,13 +1,13 @@
 import {HelmetProvider} from "react-helmet-async";
-import {AuthProvider} from "~/components/contexts/UserContext";
 import Main from "~/components/root/Main";
+import { AuthContextProvider } from "../contexts/AuthContext";
 
 export const App = () => {
-  return (
-    <HelmetProvider>
-      <AuthProvider>
-        <Main />
-      </AuthProvider>
-    </HelmetProvider>
-  )
+   return (
+      <HelmetProvider>
+         <AuthContextProvider>
+            <Main />
+         </AuthContextProvider>
+      </HelmetProvider>
+   )
 };

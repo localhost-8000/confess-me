@@ -1,30 +1,38 @@
 import { Router } from "~/components/router/Router";
 import { setupFirebase } from "~/lib/firebase";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useSignIn, useSignOut } from "~/components/contexts/UserContext";
+import { AuthContext } from "../contexts/AuthContext";
 
-function Main() {
-  const { signIn } = useSignIn();
-  const { signOut } = useSignOut();
-  useEffect(() => {
-    setupFirebase();
+export default function Main () {
+   const { user, dispatch } = useContext(AuthContext);
 
-    const auth = getAuth();
+   useEffect(() => {
+      const checkAuth = () => {
+         if(user) return;
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        signIn(user);
-      } else {
-        signOut();
+         dispatch({type: "AUTH_LOADING", payload: { authLoading: true }});
+         setupFirebase();
+
+         const auth = getAuth();
+         dispatch({type: "LOADING", payload: { loading: true }});
+         onAuthStateChanged(auth, (user) => {
+            if (user) {
+               dispatch({
+                  type: "SIGN_IN",
+                  payload: { user }
+               });
+            } else {
+               dispatch({ type: "SIGN_OUT" });
+            }
+         });
       }
-    });
-  }, []);
-  return (
-    <main>
-      <Router />
-    </main>
-  );
-}
+      checkAuth();
+   }, []);
 
-export default Main;
+   return (
+      <main className="min-h-screen w-screen inline-block">
+         <Router />
+      </main>
+   );
+}
