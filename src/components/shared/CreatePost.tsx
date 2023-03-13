@@ -11,6 +11,7 @@ import { Paper } from '@mui/material'
 import { Post } from '~/types/post';
 import { AuthContext } from '../contexts/AuthContext';
 import { AddOrUpdateFlag } from '~/types/extra';
+import { validatePost } from '~/utils/postUtil';
 
 const getWordCount = (editorState : EditorState) => {
    const plainText = editorState.getCurrentContent().getPlainText('');
@@ -41,11 +42,10 @@ export default function CreatePost(props: CreatePostProps) {
    }
 
    const saveConfession = () => {
-      if (getWordCount(editorState) > 500) {
-         alert("Your confession is too long. Please shorten it to 500 words or less.");
-         return;
-      }
       handleModalClose();
+
+      if(editorState.getCurrentContent().isEmpty()) return;
+
       const rawContent = convertToRaw(editorState.getCurrentContent());
       const confessionString = JSON.stringify(rawContent);  
       setPreviewConfession(editorState.getCurrentContent().getPlainText().substring(0, 30));
@@ -60,26 +60,31 @@ export default function CreatePost(props: CreatePostProps) {
    const handleModalClose = () => { setModalOpen(false) };
 
    const createPost = () => {
-      if (post.collegeData === null) {
+      const errorMsg = validatePost(post.collegeData, post.confession);
+
+      if(errorMsg) {
          dispatch({
             type: "SNACKBAR",
             payload: {
                open: true,
-               message: "Please select a college!!",
+               message: errorMsg,
                severity: "error",
             }
          });
          return;
       }
+
       dispatch({type: "LOADING", payload: {loading: true}});
+
       createNewPost(post).then(val => {
          props.addPostCB(val, "add");
+
          dispatch({type: "LOADING", payload: {loading: false}});
          dispatch({
             type: "SNACKBAR",
             payload: {
                open: true,
-               message: "Your confession has been posted.",
+               message: "Your confession has been sent for review. It will be posted once it is approved. The review process usually takes 10-20 minutes.",
                severity: "success",
             }
          })
