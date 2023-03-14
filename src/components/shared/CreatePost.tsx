@@ -113,7 +113,7 @@ export default function CreatePost(props: CreatePostProps) {
             renderInput={(params) => <TextField {...params} label="Select College" />} 
          />
          <div className="flex items-center">
-            <Button variant="outlined" onClick={handleClickOpen} sx={{marginTop: '6px'}}>
+            <Button variant="outlined" onClick={handleClickOpen} sx={{marginTop: '6px', color: '#333346', fontWeight: 'bold', border: '1px solid #6D6D86'}}>
                Start Writing
             </Button>
 
@@ -133,7 +133,7 @@ export default function CreatePost(props: CreatePostProps) {
             saveConfessionCB={saveConfession}
          />
          <div className="flex mt-4 items-center justify-end">
-            <Button color="info" variant="contained" sx={{marginRight: '8px'}} onClick={createPost}>
+            <Button color="info" variant="contained" sx={{marginRight: '8px', bgcolor: '#6D6D86', fontWeight: 'bold'}} onClick={createPost}>
                Compose
             </Button>
             <Button color="warning" onClick={clearFields}>Clear</Button>

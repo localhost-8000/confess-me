@@ -27,7 +27,7 @@ export default function Filter(props: FilterProps) {
    const [sortBy, setSortBy] = React.useState<FilterOption['sortBy']>('none');
    
    const handleChange = (panel: string) => 
-      (event: React.SyntheticEvent, isExpanded: boolean) => {
+      (_: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
    };
 
@@ -49,7 +49,7 @@ export default function Filter(props: FilterProps) {
    }
 
    return (
-      <div className="max-w-[1200px] mx-auto bg-[#333346] rounded-xl mt-6 p-6">
+      <div className="max-w-[1200px] mx-auto bg-[#333346] rounded-xl mt-6 p-4">
          <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
 
             <AccordionSummary
@@ -100,7 +100,7 @@ export default function Filter(props: FilterProps) {
                      </Select>
                   </FormControl>
                </Paper>
-               <Button variant="contained" sx={{width: '20%', maxWidth: '200px'}} onClick={ApplyFilters}>Apply</Button>
+               <Button variant="contained" sx={{width: '20%', maxWidth: '200px', bgcolor: '#6D6D86', fontWeight: 'bold'}} onClick={ApplyFilters}>Apply</Button>
             </AccordionDetails>
          </Accordion>
 

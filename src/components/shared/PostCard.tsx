@@ -67,7 +67,7 @@ export default function PostCard(props: PostCardType) {
     <Card sx={{ maxWidth: 600, width: '100%', marginBottom: '18px' }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: '#70709e' }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: '#70709e', border: '2px solid #333346' }} aria-label="college">
             {post.collegeData?.logo ? <img src={post.collegeData?.logo} alt="college logo" className="w-8 h-8" /> : <InterestsIcon />}
           </Avatar>
         }
@@ -78,8 +78,10 @@ export default function PostCard(props: PostCardType) {
         }
         title={post.collegeData?.name}
         subheader={formatTimeAgo(post.createdAt)}
+        titleTypographyProps={{fontWeight: 'bold', color: '#333346', fontSize: '16px'}}
+        subheaderTypographyProps={{color: '#333346'}}
       />
-      <CardContent sx={{marginTop: '-6px'}} className="border-y-2">
+      <CardContent sx={{marginTop: '-6px'}} className="border-y-2 border-[#a5a5ba]">
         <Box sx={{marginX: '-8px', marginY: '-10px', fontSize: '18px'}} className="p-2 bg-gray-100 rounded-lg">
          <Editor 
             editorState={getEditorContent(post.confession)}
