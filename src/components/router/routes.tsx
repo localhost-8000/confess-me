@@ -1,8 +1,10 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
 import About from '../screens/About';
+// import AdminPanel from "../screens/AdminPanel";
 import ProtectedRouteWrapper from "./ProtectedRouteWrapper";
 
+const AdminPanel = lazy(() => import('~/components/screens/AdminPanel'));
 const DevelopersInfo = lazy(() => import('~/components/screens/DevelopersInfo'));
 const HomePage = lazy(() => import('~/components/screens/HomePage'));
 const Page404Screen = lazy(() => import('~/components/screens/Page404'));
@@ -23,6 +25,9 @@ const BaseRoutes: RouteObject[] = [{
 }, {
    path: '/terms',
    element: <TermsOfUse />
+}, {
+   path: '/admin/:id',
+   element: <AdminPanel />
 }, {
    path: '*',
    element: <Page404Screen />,

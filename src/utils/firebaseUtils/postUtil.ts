@@ -5,12 +5,12 @@ import { useDatabase } from "~/lib/firebase";
 
 export const createNewPost = async (newPost: Post) => {
    const db = useDatabase();
-   const newPostKey = push(ref(db, 'posts')).key;
+   const newPostKey = push(ref(db, 'adminPosts')).key;
    newPost.id = newPostKey as string;
    newPost.createdAt = Date.now().toString();
 
    await new Promise(resolve => {
-      set(ref(db, `posts/${newPostKey}`), newPost).then(() => {
+      set(ref(db, `adminPosts/${newPostKey}`), newPost).then(() => {
          resolve('success');
       }).catch((error) => {
          console.error(error);

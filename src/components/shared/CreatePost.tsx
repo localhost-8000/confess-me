@@ -13,13 +13,6 @@ import { AuthContext } from '../contexts/AuthContext';
 import { AddOrUpdateFlag } from '~/types/extra';
 import { validatePost } from '~/utils/postUtil';
 
-const getWordCount = (editorState : EditorState) => {
-   const plainText = editorState.getCurrentContent().getPlainText('');
-   const regex = /(?:\r\n|\r|\n)/g;  // new line, carriage return, line feed
-   const cleanString = plainText.replace(regex, ' ').trim(); // replace above characters w/ space
-   const wordArray = cleanString.match(/\S+/g);  // matches words according to whitespace
-   return wordArray ? wordArray.length : 0;
-}
 
 interface CreatePostProps {
    addPostCB: (post: Post, flag: AddOrUpdateFlag) => void;
@@ -77,8 +70,8 @@ export default function CreatePost(props: CreatePostProps) {
       dispatch({type: "LOADING", payload: {loading: true}});
 
       createNewPost(post).then(val => {
-         props.addPostCB(val, "add");
-
+         // props.addPostCB(val, "add");
+         clearFields();
          dispatch({type: "LOADING", payload: {loading: false}});
          dispatch({
             type: "SNACKBAR",
