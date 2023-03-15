@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
 import About from '../screens/About';
+import PostView from "../shared/PostView";
 import ProtectedRouteWrapper from "./ProtectedRouteWrapper";
 
 const AdminPanel = lazy(() => import('~/components/screens/AdminPanel'));
@@ -27,6 +28,9 @@ const BaseRoutes: RouteObject[] = [{
 }, {
    path: '/admin/:id',
    element: <AdminPanel />
+}, {
+   path: '/post/:id',
+   element: <PostView />
 }, {
    path: '*',
    element: <Page404Screen />,

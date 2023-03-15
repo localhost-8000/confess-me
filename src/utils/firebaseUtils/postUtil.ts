@@ -92,3 +92,20 @@ export const searchPosts = async (collegeName: string) => {
 
    return posts.reverse();
 }
+
+// fetch post by id
+export const getPostById = async (postId: string) => {
+   const db = useDatabase();
+   const postRef = ref(db, `posts/${postId}`);
+
+   let result: Post | null = null;
+
+   await new Promise(resolve => {
+      onValue(postRef, (snapshot) => {
+         result = snapshot.val();
+         resolve(result);
+      }, { onlyOnce: true });
+   });
+
+   return result;
+}

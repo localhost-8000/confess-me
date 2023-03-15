@@ -1,0 +1,65 @@
+import React from 'react'
+import { useParams } from 'react-router-dom';
+import MaxWidthContainerLayout from '~/layouts/MaxWidthContainerLayout';
+import { getPostById } from '~/utils/firebaseUtils/postUtil';
+import { AuthContext } from '../contexts/AuthContext';
+import { base64Decode } from '@firebase/util'
+import { Post } from '~/types/post';
+import PostCard from './PostCard';
+import Link from '@mui/material/Link';
+import Footer from './Footer';
+import ShortLoading from './ShortLoading';
+import { setupFirebase } from '~/lib/firebase';
+
+export default function PostView() {
+   const { id } = useParams<{ id: string }>();
+   const { user, dispatch, loading } = React.useContext(AuthContext);
+   const [post, setPost] = React.useState<Post | null>(null);
+
+   React.useEffect(() => {
+      const fetchPost = () => {
+         if(!id) return;
+         try {
+            if(!user) setupFirebase();
+            dispatch({type: "LOADING", payload: {loading: true}});
+            const decodedPostId = base64Decode(id);
+            if(!decodedPostId) return;
+            getPostById(decodedPostId).then(res => {
+               if(res) {
+                  setPost(res);
+               }
+               dispatch({type: "LOADING", payload: {loading: false}});
+            });
+         } catch (err) {
+            console.log(err);
+         } finally {
+            dispatch({type: "LOADING", payload: {loading: false}});
+         }
+      }
+      fetchPost();
+   }, [id, user]);
+
+   return (
+      <>
+         <MaxWidthContainerLayout>
+            {loading ? <ShortLoading /> : 
+               <div className="w-[100%] flex flex-col items-center">
+                  {post ? <PostCard post={post} /> 
+                  : <PostNotFound />}
+               </div>
+            }
+         </MaxWidthContainerLayout>
+         <Footer />
+      </>
+   )
+}
+
+const PostNotFound = () => {
+   return (
+      <div className="text-white flex flex-col items-center">
+         <h3 className="text-2xl ">Post not found!! Recheck your URL.</h3>
+
+         <Link href="/" sx={{fontSize: '18px', marginTop: '6px'}}>Go to Home</Link>
+      </div>
+   )
+}

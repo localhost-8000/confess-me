@@ -15,10 +15,13 @@ import { togglePostLike } from '~/utils/firebaseUtils/postUtil';
 import { Box } from '@mui/material';
 import { AuthContext } from '../contexts/AuthContext';
 import { AddOrUpdateFlag } from '~/types/extra';
+import ShareIcon from '@mui/icons-material/Share';
+import { AuthActions } from '~/types/auth';
+import { base64Encode } from '@firebase/util';
 
 interface PostCardType {
    post: Post;
-   updatePostCB: (updatedPost: Post, flag: AddOrUpdateFlag) => void;
+   updatePostCB?: (updatedPost: Post, flag: AddOrUpdateFlag) => void;
 }
 
 const getEditorContent = (confession: string) => {
@@ -34,6 +37,32 @@ const isUserLiked = (userId: string, post: Post) => {
    return false;
 }
 
+const copyToClipboard = (text: string | undefined, dispatch: (action: AuthActions) => void) => {
+   if(!text) return;
+
+   const navigator = window.navigator;
+   const encodedId = base64Encode(text);
+   const shareLink = `${window.location.origin}/post/${encodedId}`;
+
+
+   if(!navigator.clipboard) {
+      dispatch({type: "SNACKBAR", payload: {
+         open: true, message: `Share link: ${shareLink}`, severity: "success"
+      }});
+      return;
+   }
+
+   navigator.clipboard.writeText(shareLink).then(() => {
+      dispatch({type: "SNACKBAR", payload: {
+         open: true, message: "Copied to clipboard", severity: "success"
+      }});
+   }, _ => {
+      dispatch({type: "SNACKBAR", payload: {
+         open: true, message: `Share link: ${shareLink}`, severity: "success"
+      }});
+   });
+}
+
 export default function PostCard(props: PostCardType) {
    const { post, updatePostCB } = props;
    const { user, dispatch } = React.useContext(AuthContext);
@@ -41,7 +70,7 @@ export default function PostCard(props: PostCardType) {
    const [userLikes, setUserLikes] = React.useState<boolean>(() => isUserLiked(user?.uid || "", post));
 
    React.useEffect(() => {
-      updatePostCB(currentPost, "update");
+      if(updatePostCB) updatePostCB(currentPost, "update");
       setUserLikes(isUserLiked(user?.uid || "", currentPost));
    }, [currentPost, currentPost.likesCount, currentPost.likes]);
 
@@ -92,6 +121,7 @@ export default function PostCard(props: PostCardType) {
       </CardContent>
       <CardActions disableSpacing>
         <LikeChip likesCount={currentPost.likesCount} isLiked={userLikes} likeHandlerCB={postLikeHandler} />
+        <IconButton aria-label="share" sx={{marginLeft: '8px'}} onClick={_ => copyToClipboard(post.id, dispatch)}><ShareIcon /></IconButton>
       </CardActions>
     </Card>
   );
