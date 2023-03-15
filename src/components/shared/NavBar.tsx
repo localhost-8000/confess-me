@@ -2,6 +2,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import { redirect } from 'react-router-dom';
 import { useAuth } from '~/lib/firebase';
 import { useContext } from 'react';
+import logoImg from '~/assets/confess-me-logo.png';
 
 const img = "https://images.unsplash.com/photo-1599566150163-29194dcaad36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTgwOTN8MHwxfHNlYXJjaHwzfHxhdmF0YXJ8ZW58MHx8fHwxNjc4NDYzOTM4&ixlib=rb-4.0.3&q=80&w=1080";
 
@@ -18,7 +19,12 @@ export default function NavBar() {
       <div className="navbar bg-[#333346] mt-3 max-w-[1200px] mx-auto rounded-xl">
 
          <div className="flex-1">
-            <a className="btn btn-ghost normal-case text-xl text-white" href="/about">confess-me</a>
+            <a className="btn btn-ghost normal-case text-xl text-white" href="/about">
+               <div className="flex h-full w-full items-center">
+                  <img src={logoImg} alt="company logo" className="h-full" />
+                  <span className="-mt-1 ml-2">confess-me</span>
+               </div>
+               </a>
          </div>
 
          <div className="flex-none gap-2">

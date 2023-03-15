@@ -1,7 +1,6 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
 import About from '../screens/About';
-// import AdminPanel from "../screens/AdminPanel";
 import ProtectedRouteWrapper from "./ProtectedRouteWrapper";
 
 const AdminPanel = lazy(() => import('~/components/screens/AdminPanel'));
