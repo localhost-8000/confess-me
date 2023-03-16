@@ -28,7 +28,7 @@ export const setupFirebase = () => {
   }
 };
 
-export const useAuth = () => {
+export default function useAuth () {
   auth = getAuth(firebaseApp);
   if (useEmulator()) {
     connectAuthEmulator(auth, 'http://localhost:9099');
