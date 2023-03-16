@@ -42,8 +42,7 @@ const copyToClipboard = (text: string | undefined, dispatch: (action: AuthAction
 
    const navigator = window.navigator;
    const encodedId = base64Encode(text);
-   const shareLink = `${window.location.origin}/post/${encodedId}`;
-
+   const shareLink = `${window.location.origin}/post/${encodedId}`.slice(0, -1);
 
    if(!navigator.clipboard) {
       dispatch({type: "SNACKBAR", payload: {

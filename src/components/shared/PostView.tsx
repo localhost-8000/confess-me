@@ -27,17 +27,22 @@ export default function PostView() {
             getPostById(decodedPostId).then(res => {
                if(res) {
                   setPost(res);
+               } else {
+                  dispatch({type: "LOADING", payload: {loading: false}});
                }
-               dispatch({type: "LOADING", payload: {loading: false}});
             });
          } catch (err) {
             console.log(err);
-         } finally {
             dispatch({type: "LOADING", payload: {loading: false}});
          }
       }
       fetchPost();
    }, [id, user]);
+
+   React.useEffect(() => {
+      if(!post) return;
+      dispatch({type: "LOADING", payload: {loading: false}});
+   }, [post]);
 
    return (
       <>
@@ -47,6 +52,10 @@ export default function PostView() {
                   {post ? <PostCard post={post} /> 
                   : <PostNotFound />}
                </div>
+            }
+            { !user ? <div className="pt-2 text-white flex items-center justify-center">
+               <Link href="/" sx={{fontSize: '18px', marginTop: '6px', color: 'inherit'}} underline='hover'>Login to see more such confessions🫡</Link>
+            </div> : null
             }
          </MaxWidthContainerLayout>
          <Footer />

@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { useRoutes, BrowserRouter } from 'react-router-dom';
+import Loading from '../shared/Loading';
 import { getAppRoutes } from './routes';
 
 const FallbackLoading = () => <p>Loading...</p>;
@@ -21,7 +22,7 @@ const AppRouter = () => {
 
    return (
       <div>
-         <Suspense fallback={<FallbackLoading />}>{routeElement}</Suspense>
+         <Suspense fallback={<Loading />}>{routeElement}</Suspense>
       </div>
    )
 }
