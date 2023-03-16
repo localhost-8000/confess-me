@@ -1,4 +1,3 @@
-import React from 'react'
 import ExtraPageLayout from '../shared/ExtraPageLayout';
 
 export default function About() {

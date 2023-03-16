@@ -3,6 +3,7 @@ import { useRoutes, BrowserRouter } from 'react-router-dom';
 import Loading from '../shared/Loading';
 import { getAppRoutes } from './routes';
 
+const FallbackLoading = () => <p>Loading...</p>;
 
 export const Router = () => {
    // const { authLoading} = useContext(AuthContext);

@@ -1,16 +1,24 @@
 import { Post } from "~/types/post";
-import { ref, set, push, onValue, query, orderByChild, runTransaction, equalTo } from "firebase/database";
+import { 
+   equalTo,
+   onValue, 
+   orderByChild, 
+   push, 
+   query, 
+   ref, 
+   runTransaction, 
+   set } from "firebase/database";
 import { useDatabase } from "~/lib/firebase";
 
 
 export const createNewPost = async (newPost: Post) => {
    const db = useDatabase();
-   const newPostKey = push(ref(db, 'posts')).key;
+   const newPostKey = push(ref(db, 'adminPosts')).key;
    newPost.id = newPostKey as string;
    newPost.createdAt = Date.now().toString();
 
    await new Promise(resolve => {
-      set(ref(db, `posts/${newPostKey}`), newPost).then(() => {
+      set(ref(db, `adminPosts/${newPostKey}`), newPost).then(() => {
          resolve('success');
       }).catch((error) => {
          console.error(error);
@@ -91,4 +99,52 @@ export const searchPosts = async (collegeName: string) => {
    });
 
    return posts.reverse();
+}
+
+// fetch post by id
+export const getPostById = async (postId: string) => {
+   const db = useDatabase();
+   const postRef = ref(db, `posts/${postId}`);
+
+   let result: Post | null = null;
+
+   await new Promise(resolve => {
+      onValue(postRef, (snapshot) => {
+         result = snapshot.val();
+         resolve(result);
+      }, { onlyOnce: true });
+   });
+
+   return result;
+}
+
+export const reportPost = async (postId: string, userId: string) => {
+   const db = useDatabase();
+   const postRef = ref(db, `posts/${postId}`);
+
+   let result: string | null = null;
+
+   await new Promise(resolve => {
+      runTransaction(postRef, (post) => {
+         if(post) {
+            if(post.reports && post.reports[userId]) {
+               result = "already_reported";
+            } else {
+               if(!post.reportCounts) post.reportCounts = 0;
+               post.reportCounts++;
+               if(!post.reports) post.reports = {};
+               post.reports[userId] = true;
+               result = "success";
+            }
+         }
+         return post;
+      }).then(_ => {
+         resolve(result);
+      }).catch(_ => {
+         result = "error";
+         resolve(result);
+      });
+   });
+
+   return result;
 }

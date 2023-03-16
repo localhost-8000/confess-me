@@ -1,9 +1,8 @@
 import { Avatar, Divider, Link } from '@mui/material';
-import React from 'react'
-import ExtraPageLayout from '../shared/ExtraPageLayout'
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import InstagramIcon from '@mui/icons-material/Instagram';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import ExtraPageLayout from '../shared/ExtraPageLayout'
+import InstagramIcon from '@mui/icons-material/Instagram';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const img = "https://drive.google.com/uc?export=view&id=1ZoatOpdNojDjpT9HXaQB850oNu4FI3c1";
 

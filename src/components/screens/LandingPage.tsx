@@ -1,17 +1,9 @@
-import { useContext, useEffect, useState } from 'react'
-import { Dialog } from '@headlessui/react'
-import { SignInButton } from '../domain/auth/SignInButton';
 import Footer from '../shared/Footer';
-import { redirect, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext';
-// import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
-const navigation = [
-  { name: 'Product', href: '#' },
-  { name: 'Features', href: '#' },
-  { name: 'Marketplace', href: '#' },
-  { name: 'Company', href: '#' },
-]
+import { AuthContext } from '../contexts/AuthContext';
+import { redirect } from 'react-router-dom';
+import { SignInButton } from '../domain/auth/SignInButton';
+import { useContext, useEffect } from 'react';
 
 export default function LandingPage() {
    const { user } = useContext(AuthContext);

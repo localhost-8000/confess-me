@@ -31,24 +31,33 @@ export default function TextEditor(props: TextEditorProps) {
    
    return (
       <Dialog open={modalOpen} onClose={handleModalCloseCB}>
-         <DialogTitle>Write your confession</DialogTitle>
+         <DialogTitle sx={{fontWeight: 'bold'}}>Write your confession</DialogTitle>
          <DialogContent>
             <DialogContentText>
-               Don't use any profanity or hate speech. We will remove your post if you do.
+               Don't use any profanity or hate speech. Try not to include name of any person. Such posts won't be approved.
                You can use <b>ctrl + b</b>, <i>ctrl + i</i>, <u>ctrl + u</u> to bold, italicize, and underline text. <i>We think 500 words are enough to express your feelings</i>.
+               <br />
             </DialogContentText>
-            <div className="border-[2px] rounded-md border-gray-300 px-2 py-3 mt-2 min-h-[100px]">
+            <div className="border-[2px] rounded-md border-[#333346] px-2 py-3 mt-2 min-h-[150px]">
                <Editor 
                   editorState={editorState} 
                   handleKeyCommand={handleKeyCommand}
                   onChange={onChangeCB} 
-                  placeholder="Write your confession here"
+                  placeholder={`Hey xyz,\nI want to confess ...\n\nWith love,\nabc`}
                />
             </div>
          </DialogContent>
          <DialogActions>
-            <Button onClick={handleModalCloseCB} color="warning" sx={{marginRight: '8px'}}>Cancel</Button>
-            <Button onClick={saveConfessionCB} color="success" variant="contained">
+            <Button 
+               onClick={handleModalCloseCB} 
+               color="warning" 
+               sx={{marginRight: '8px', fontWeight: 'bold'}}>
+                  Cancel
+            </Button>
+            <Button 
+               onClick={saveConfessionCB} 
+               sx={{bgcolor: '#6D6D86', fontWeight: 'bold', ":hover": {bgcolor: '#333346'}}}
+               variant="contained">
                Save
             </Button>
         </DialogActions>

@@ -1,19 +1,19 @@
-import React from 'react'
-import Autocomplete from '@mui/material/Autocomplete';
-import Button from '@mui/material/Button';
-import { Paper } from '@mui/material'
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import { College, colleges } from '~/utils/CollegeData';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import Autocomplete from '@mui/material/Autocomplete';
+import Button from '@mui/material/Button';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
+import React from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { College, colleges } from '~/utils/CollegeData';
 import { FilterOption, sortOptions } from '~/types/filter';
+import { Paper } from '@mui/material';
 
 interface FilterProps {
    filterOptions: FilterOption;
@@ -27,7 +27,7 @@ export default function Filter(props: FilterProps) {
    const [sortBy, setSortBy] = React.useState<FilterOption['sortBy']>('none');
    
    const handleChange = (panel: string) => 
-      (event: React.SyntheticEvent, isExpanded: boolean) => {
+      (_: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
    };
 
@@ -49,7 +49,7 @@ export default function Filter(props: FilterProps) {
    }
 
    return (
-      <div className="max-w-[1200px] mx-auto bg-[#333346] rounded-xl mt-6 p-6">
+      <div className="max-w-[1200px] mx-auto bg-[#333346] rounded-xl mt-6 p-4">
          <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
 
             <AccordionSummary
@@ -100,7 +100,7 @@ export default function Filter(props: FilterProps) {
                      </Select>
                   </FormControl>
                </Paper>
-               <Button variant="contained" sx={{width: '20%', maxWidth: '200px'}} onClick={ApplyFilters}>Apply</Button>
+               <Button variant="contained" sx={{width: '20%', maxWidth: '200px', bgcolor: '#6D6D86', fontWeight: 'bold'}} onClick={ApplyFilters}>Apply</Button>
             </AccordionDetails>
          </Accordion>
 

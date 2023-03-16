@@ -11,14 +11,8 @@ import { Paper } from '@mui/material'
 import { Post } from '~/types/post';
 import { AuthContext } from '../contexts/AuthContext';
 import { AddOrUpdateFlag } from '~/types/extra';
+import { validatePost } from '~/utils/postUtil';
 
-const getWordCount = (editorState : EditorState) => {
-   const plainText = editorState.getCurrentContent().getPlainText('');
-   const regex = /(?:\r\n|\r|\n)/g;  // new line, carriage return, line feed
-   const cleanString = plainText.replace(regex, ' ').trim(); // replace above characters w/ space
-   const wordArray = cleanString.match(/\S+/g);  // matches words according to whitespace
-   return wordArray ? wordArray.length : 0;
-}
 
 interface CreatePostProps {
    addPostCB: (post: Post, flag: AddOrUpdateFlag) => void;
@@ -41,11 +35,10 @@ export default function CreatePost(props: CreatePostProps) {
    }
 
    const saveConfession = () => {
-      if (getWordCount(editorState) > 500) {
-         alert("Your confession is too long. Please shorten it to 500 words or less.");
-         return;
-      }
       handleModalClose();
+
+      if(editorState.getCurrentContent().isEmpty()) return;
+
       const rawContent = convertToRaw(editorState.getCurrentContent());
       const confessionString = JSON.stringify(rawContent);  
       setPreviewConfession(editorState.getCurrentContent().getPlainText().substring(0, 30));
@@ -60,26 +53,31 @@ export default function CreatePost(props: CreatePostProps) {
    const handleModalClose = () => { setModalOpen(false) };
 
    const createPost = () => {
-      if (post.collegeData === null) {
+      const errorMsg = validatePost(post.collegeData, post.confession);
+
+      if(errorMsg) {
          dispatch({
             type: "SNACKBAR",
             payload: {
                open: true,
-               message: "Please select a college!!",
+               message: errorMsg,
                severity: "error",
             }
          });
          return;
       }
+
       dispatch({type: "LOADING", payload: {loading: true}});
+
       createNewPost(post).then(val => {
-         props.addPostCB(val, "add");
+         // props.addPostCB(val, "add");
+         clearFields();
          dispatch({type: "LOADING", payload: {loading: false}});
          dispatch({
             type: "SNACKBAR",
             payload: {
                open: true,
-               message: "Your confession has been posted.",
+               message: "Your confession has been sent for review. It will be posted once it is approved. The review process usually takes 10-20 minutes.",
                severity: "success",
             }
          })
@@ -115,7 +113,7 @@ export default function CreatePost(props: CreatePostProps) {
             renderInput={(params) => <TextField {...params} label="Select College" />} 
          />
          <div className="flex items-center">
-            <Button variant="outlined" onClick={handleClickOpen} sx={{marginTop: '6px'}}>
+            <Button variant="outlined" onClick={handleClickOpen} sx={{marginTop: '6px', color: '#333346', fontWeight: 'bold', border: '1px solid #6D6D86'}}>
                Start Writing
             </Button>
 
@@ -135,7 +133,7 @@ export default function CreatePost(props: CreatePostProps) {
             saveConfessionCB={saveConfession}
          />
          <div className="flex mt-4 items-center justify-end">
-            <Button color="info" variant="contained" sx={{marginRight: '8px'}} onClick={createPost}>
+            <Button color="info" variant="contained" sx={{marginRight: '8px', bgcolor: '#6D6D86', fontWeight: 'bold'}} onClick={createPost}>
                Compose
             </Button>
             <Button color="warning" onClick={clearFields}>Clear</Button>

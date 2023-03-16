@@ -1,13 +1,11 @@
-import { Backdrop, CircularProgress } from '@mui/material'
-import React, { useContext } from 'react'
-import { AuthContext } from '../contexts/AuthContext'
+import { AuthContext } from '../contexts/AuthContext';
+import { Backdrop, CircularProgress } from '@mui/material';
+import { useContext } from 'react';
 
 export default function Loading() {
    const { loading, dispatch } = useContext(AuthContext);
-   const [open, setOpen] = React.useState(loading);
 
    const handleClose = () => {
-      setOpen(false);
       dispatch({
          type: "LOADING",
          payload: {
@@ -15,6 +13,7 @@ export default function Loading() {
          }
       });
    }
+
    return (
       <Backdrop
          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

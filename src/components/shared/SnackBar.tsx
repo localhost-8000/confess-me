@@ -10,9 +10,9 @@ export default function SnackBar() {
    const { snackbar, dispatch} = React.useContext(AuthContext);
 
    const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
-      if (reason === 'clickaway') {
-        return;
-      }
+      // if (reason === 'clickaway') {
+      //   return;
+      // }
 
       dispatch({
          type: "SNACKBAR",
