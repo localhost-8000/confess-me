@@ -1,15 +1,15 @@
-import React from 'react'
-import { useParams } from 'react-router-dom';
+import Footer from './Footer';
+import Link from '@mui/material/Link';
 import MaxWidthContainerLayout from '~/layouts/MaxWidthContainerLayout';
-import { getPostById } from '~/utils/firebaseUtils/postUtil';
+import PostCard from './PostCard';
+import React from 'react'
+import ShortLoading from './ShortLoading';
 import { AuthContext } from '../contexts/AuthContext';
 import { base64Decode } from '@firebase/util'
+import { getPostById } from '~/utils/firebaseUtils/postUtil';
 import { Post } from '~/types/post';
-import PostCard from './PostCard';
-import Link from '@mui/material/Link';
-import Footer from './Footer';
-import ShortLoading from './ShortLoading';
 import { setupFirebase } from '~/lib/firebase';
+import { useParams } from 'react-router-dom';
 
 export default function PostView() {
    const { id } = useParams<{ id: string }>();

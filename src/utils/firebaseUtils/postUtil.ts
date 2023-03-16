@@ -1,5 +1,13 @@
 import { Post } from "~/types/post";
-import { ref, set, push, onValue, query, orderByChild, runTransaction, equalTo } from "firebase/database";
+import { 
+   equalTo,
+   onValue, 
+   orderByChild, 
+   push, 
+   query, 
+   ref, 
+   runTransaction, 
+   set } from "firebase/database";
 import { useDatabase } from "~/lib/firebase";
 
 

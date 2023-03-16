@@ -1,5 +1,6 @@
-import { useContext } from 'react'
 import { AuthContext } from '../contexts/AuthContext';
+import { useContext } from 'react';
+
 import Footer from '../shared/Footer';
 import NavBar from '../shared/NavBar';
 

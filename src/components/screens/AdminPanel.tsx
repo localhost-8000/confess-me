@@ -1,8 +1,8 @@
+import AdminPostCard from '../shared/AdminPostCard';
 import React from 'react'
+import { getAdminPosts } from '~/utils/firebaseUtils/adminUtil';
 import { useParams } from 'react-router-dom';
 import { Post } from '~/types/post';
-import { getAdminPosts } from '~/utils/firebaseUtils/adminUtil';
-import AdminPostCard from '../shared/AdminPostCard';
 
 export default function AdminPanel() {
    const { id } = useParams<{ id: string }>();

@@ -1,19 +1,19 @@
-import React from 'react'
-import Autocomplete from '@mui/material/Autocomplete';
-import Button from '@mui/material/Button';
-import { Paper } from '@mui/material'
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import { College, colleges } from '~/utils/CollegeData';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import Autocomplete from '@mui/material/Autocomplete';
+import Button from '@mui/material/Button';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
+import React from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { College, colleges } from '~/utils/CollegeData';
 import { FilterOption, sortOptions } from '~/types/filter';
+import { Paper } from '@mui/material';
 
 interface FilterProps {
    filterOptions: FilterOption;

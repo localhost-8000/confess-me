@@ -1,17 +1,16 @@
-
-import { useContext, useEffect, useMemo, useState } from 'react';
-import PostCard from '../shared/PostCard'
-import CreatePost from '../shared/CreatePost';
-import { Post } from '~/types/post';
-import { getAllPosts } from '~/utils/firebaseUtils/postUtil';
-import NavBar from '../shared/NavBar';
-import Footer from '../shared/Footer';
-import Filter from '../shared/Filter';
-import { FilterOption } from '~/types/filter';
-import SnackBar from '../shared/SnackBar';
 import { AddOrUpdateFlag } from '~/types/extra';
 import { AuthContext } from '../contexts/AuthContext';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { FilterOption } from '~/types/filter';
+import { Post } from '~/types/post';
+import { getAllPosts } from '~/utils/firebaseUtils/postUtil';
+
+import CreatePost from '../shared/CreatePost';
+import Filter from '../shared/Filter';
+import Footer from '../shared/Footer';
 import Loading from '../shared/Loading';
+import NavBar from '../shared/NavBar';
+import PostCard from '../shared/PostCard';
 
 function sortByMostRecent(posts: Post[]) {
    return posts.sort((a, b) => {

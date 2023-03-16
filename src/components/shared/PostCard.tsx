@@ -1,24 +1,24 @@
 import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import LikeChip from './LikeChip';
-import { convertFromRaw, Editor, EditorState } from 'draft-js';
-import { Post } from '~/types/post';
 import InterestsIcon from '@mui/icons-material/Interests';
-import { formatTimeAgo } from '~/utils/dateParser';
-import { reportPost, togglePostLike } from '~/utils/firebaseUtils/postUtil';
-import { Box } from '@mui/material';
+import LikeChip from './LikeChip';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import PostMenu from './PostMenu';
+import ShareIcon from '@mui/icons-material/Share';
+import { convertFromRaw, Editor, EditorState } from 'draft-js';
+import { AuthActions } from '~/types/auth';
 import { AuthContext } from '../contexts/AuthContext';
 import { AddOrUpdateFlag } from '~/types/extra';
-import ShareIcon from '@mui/icons-material/Share';
-import { AuthActions } from '~/types/auth';
+import { Box } from '@mui/material';
+import { Post } from '~/types/post';
 import { base64Encode } from '@firebase/util';
-import PostMenu from './PostMenu';
+import { formatTimeAgo } from '~/utils/dateParser';
+import { reportPost, togglePostLike } from '~/utils/firebaseUtils/postUtil';
 
 interface PostCardType {
    post: Post;

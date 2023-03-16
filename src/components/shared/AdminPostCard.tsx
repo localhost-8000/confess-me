@@ -1,18 +1,17 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { convertFromRaw, Editor, EditorState } from 'draft-js';
-import { Post } from '~/types/post';
-import InterestsIcon from '@mui/icons-material/Interests';
-import { formatTimeAgo } from '~/utils/dateParser';
-import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import IconButton from '@mui/material/IconButton';
+import InterestsIcon from '@mui/icons-material/Interests';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { approvePost, rejectPost } from '~/utils/firebaseUtils/adminUtil';
+import { Box } from '@mui/material';
+import { convertFromRaw, Editor, EditorState } from 'draft-js';
+import { formatTimeAgo } from '~/utils/dateParser';
+import { Post } from '~/types/post';
 
 interface PostCardType {
    post: Post;

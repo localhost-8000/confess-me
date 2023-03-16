@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
 
-
 function Page404() {
   return (
    <div className="hero min-h-screen">

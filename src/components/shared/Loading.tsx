@@ -1,6 +1,6 @@
-import { Backdrop, CircularProgress } from '@mui/material'
-import { useContext } from 'react'
-import { AuthContext } from '../contexts/AuthContext'
+import { AuthContext } from '../contexts/AuthContext';
+import { Backdrop, CircularProgress } from '@mui/material';
+import { useContext } from 'react';
 
 export default function Loading() {
    const { loading, dispatch } = useContext(AuthContext);
