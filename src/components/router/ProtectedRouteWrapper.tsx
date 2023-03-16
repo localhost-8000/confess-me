@@ -8,7 +8,7 @@ export default function ProtectedRouteWrapper(props: { children: React.ReactElem
 
    if(authLoading) return <Loading />;
 
-   if(user) return props.children;
+   else if(user) return props.children;
    
-   return <LandingPage />
+   else return <LandingPage />
 }
