@@ -7,4 +7,5 @@ export type Post = {
    likesCount: number;
    likes?: { [key: string]: boolean };
    createdAt?: string;
+   reportCounts?: number;
 }

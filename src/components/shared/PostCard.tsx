@@ -11,13 +11,14 @@ import { convertFromRaw, Editor, EditorState } from 'draft-js';
 import { Post } from '~/types/post';
 import InterestsIcon from '@mui/icons-material/Interests';
 import { formatTimeAgo } from '~/utils/dateParser';
-import { togglePostLike } from '~/utils/firebaseUtils/postUtil';
+import { reportPost, togglePostLike } from '~/utils/firebaseUtils/postUtil';
 import { Box } from '@mui/material';
 import { AuthContext } from '../contexts/AuthContext';
 import { AddOrUpdateFlag } from '~/types/extra';
 import ShareIcon from '@mui/icons-material/Share';
 import { AuthActions } from '~/types/auth';
 import { base64Encode } from '@firebase/util';
+import PostMenu from './PostMenu';
 
 interface PostCardType {
    post: Post;
@@ -67,6 +68,7 @@ export default function PostCard(props: PostCardType) {
    const { user, dispatch } = React.useContext(AuthContext);
    const [currentPost, setCurrentPost] = React.useState<Post>(props.post);
    const [userLikes, setUserLikes] = React.useState<boolean>(() => isUserLiked(user?.uid || "", post));
+   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
    React.useEffect(() => {
       if(updatePostCB) updatePostCB(currentPost, "update");
@@ -91,6 +93,26 @@ export default function PostCard(props: PostCardType) {
       })
    }
 
+   const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+   }
+
+   const closeMenu = () => { setAnchorEl(null); }
+
+   const reportPostHandler = () => {
+      if(!post.id || !user) return;
+
+      reportPost(post.id, user.uid).then(res => {
+         if(res === "success") {
+            dispatch({ type: "SNACKBAR", payload: { open: true, message: "Post reported successfully!!", severity: "success" }});
+         } else if(res === "already_reported") {
+            dispatch({ type: "SNACKBAR", payload: { open: true, message: "You've already reported this post!!", severity: "success" }});
+         } else {
+            dispatch({ type: "SNACKBAR", payload: { open: true, message: "Error while reporting the post!!", severity: "error" }});
+         }
+      });
+   }
+
   return (
     <Card sx={{ maxWidth: 600, width: '100%', marginBottom: '18px' }}>
       <CardHeader
@@ -100,9 +122,12 @@ export default function PostCard(props: PostCardType) {
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+            <>
+               <IconButton aria-label="settings" onClick={openMenu}>
+                  <MoreVertIcon />
+               </IconButton>
+               <PostMenu anchorEl={anchorEl} handleCloseCB={closeMenu} reportPostCB={reportPostHandler} />
+            </>
         }
         title={post.collegeData?.name}
         subheader={formatTimeAgo(post.createdAt)}

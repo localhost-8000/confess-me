@@ -109,3 +109,34 @@ export const getPostById = async (postId: string) => {
 
    return result;
 }
+
+export const reportPost = async (postId: string, userId: string) => {
+   const db = useDatabase();
+   const postRef = ref(db, `posts/${postId}`);
+
+   let result: string | null = null;
+
+   await new Promise(resolve => {
+      runTransaction(postRef, (post) => {
+         if(post) {
+            if(post.reports && post.reports[userId]) {
+               result = "already_reported";
+            } else {
+               if(!post.reportCounts) post.reportCounts = 0;
+               post.reportCounts++;
+               if(!post.reports) post.reports = {};
+               post.reports[userId] = true;
+               result = "success";
+            }
+         }
+         return post;
+      }).then(_ => {
+         resolve(result);
+      }).catch(_ => {
+         result = "error";
+         resolve(result);
+      });
+   });
+
+   return result;
+}
