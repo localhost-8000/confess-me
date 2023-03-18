@@ -1,5 +1,9 @@
 import { convertFromRaw, EditorState } from "draft-js";
+import { SnackbarAction } from "~/types/auth";
+import { AlertSeverity } from "~/types/extra";
+import { TextModerationResult } from "~/types/post";
 import { College } from "./CollegeData";
+import { base64urlEncodeWithoutPadding, base64Decode } from "@firebase/util";
 
 const getWordCount = (editorState : EditorState) => {
    const plainText = editorState.getCurrentContent().getPlainText('');
@@ -37,4 +41,43 @@ export const validatePost = (college: College | null, confession: string) => {
    }
 
    return errorMessage;
+}
+
+export const generateViolatingMessage = (result: TextModerationResult) => {
+   let message = "";
+   if(result["hate"]) {
+      message += "Hate speech is not allowed. ";
+   }
+   if(result["hate/threatening"]) {
+      message += "Threatening speech is not allowed. ";
+   }
+   if(result["self-harm"]) {
+      message += "Self-harm is not allowed. ";
+   }
+   if(result["sexual"]) {
+      message += "Sexual content is not allowed. ";
+   }
+   if(result["sexual/minors"]) {
+      message += "Content involving minors is not allowed. ";
+   }
+   if(result["violence"]) {
+      message += "Violent content is not allowed. ";
+   }
+   if(result["violence/graphic"]) {
+      message += "Graphic violence is not allowed. ";
+   }
+
+   return message;
+}
+
+// Generate a shortened status code of length 6 from a post ID.
+export const generateEncodedStatusId = (postId: string): string => {
+   const encodedId = base64urlEncodeWithoutPadding(postId);
+   return encodedId;
+}
+
+// Decode a shortened status code to retrieve the original post ID.
+export const generateDecodedPostId = (statusCode: string): string | null => {
+   const decodedId = base64Decode(statusCode);
+   return decodedId;
 }

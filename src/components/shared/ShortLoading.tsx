@@ -1,6 +1,6 @@
-import { AuthContext } from '../contexts/AuthContext'
-import { Backdrop, CircularProgress } from '@mui/material'
-import { useContext } from 'react'
+import { Backdrop, CircularProgress } from '@mui/material';
+import { useContext } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default function ShortLoading() {
    const { dispatch } = useContext(AuthContext);

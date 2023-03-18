@@ -10,13 +10,14 @@ import LikeChip from './LikeChip';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PostMenu from './PostMenu';
 import ShareIcon from '@mui/icons-material/Share';
-import { convertFromRaw, Editor, EditorState } from 'draft-js';
+
+import { AddOrUpdateFlag } from '~/types/extra';
 import { AuthActions } from '~/types/auth';
 import { AuthContext } from '../contexts/AuthContext';
-import { AddOrUpdateFlag } from '~/types/extra';
 import { Box } from '@mui/material';
 import { Post } from '~/types/post';
 import { base64Encode } from '@firebase/util';
+import { convertFromRaw, Editor, EditorState } from 'draft-js';
 import { formatTimeAgo } from '~/utils/dateParser';
 import { reportPost, togglePostLike } from '~/utils/firebaseUtils/postUtil';
 
@@ -123,7 +124,7 @@ export default function PostCard(props: PostCardType) {
         }
         action={
             <>
-               <IconButton aria-label="settings" onClick={openMenu}>
+               <IconButton aria-label="settings" onClick={openMenu} disabled={!user}>
                   <MoreVertIcon />
                </IconButton>
                <PostMenu anchorEl={anchorEl} handleCloseCB={closeMenu} reportPostCB={reportPostHandler} />

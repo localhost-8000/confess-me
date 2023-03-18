@@ -1,4 +1,4 @@
-import { Post } from "~/types/post";
+import { Post, PostWithStatus, TextModerationResult, TextModerationReturnType } from "~/types/post";
 import { 
    equalTo,
    onValue, 
@@ -9,23 +9,30 @@ import {
    runTransaction, 
    set } from "firebase/database";
 import { useDatabase } from "~/lib/firebase";
+import { generateEncodedStatusId, generateViolatingMessage } from "../postUtil";
 
 
 export const createNewPost = async (newPost: Post) => {
    const db = useDatabase();
    const newPostKey = push(ref(db, 'adminPosts')).key;
-   newPost.id = newPostKey as string;
-   newPost.createdAt = Date.now().toString();
+
+   const postToBeModerated: PostWithStatus = {
+      ...newPost,
+      id: newPostKey as string,
+      createdAt: Date.now().toString(),
+      statusId: generateEncodedStatusId(newPostKey as string),
+      status: "pending"
+   }
 
    await new Promise(resolve => {
-      set(ref(db, `adminPosts/${newPostKey}`), newPost).then(() => {
+      set(ref(db, `adminPosts/${newPostKey}`), postToBeModerated).then(() => {
          resolve('success');
       }).catch((error) => {
          console.error(error);
       });
    });
 
-   return newPost;
+   return postToBeModerated;
 }
 
 // Get all the posts in order of most recent one
@@ -102,7 +109,7 @@ export const searchPosts = async (collegeName: string) => {
 }
 
 // fetch post by id
-export const getPostById = async (postId: string) => {
+export const getPostById = async (postId: string): Promise<Post | null> => {
    const db = useDatabase();
    const postRef = ref(db, `posts/${postId}`);
 
@@ -147,4 +154,38 @@ export const reportPost = async (postId: string, userId: string) => {
    });
 
    return result;
+}
+
+// Run test moderation api to check if the post contains any inappropriate content
+export const testModeration = async (confession: string): Promise<TextModerationReturnType> => {
+   console.log(confession)
+   const openAIAPIKey = import.meta.env.VITE_OPENAI_API_KEY;
+   const openAIUrl = "https://api.openai.com/v1/moderations";
+
+   const promise: TextModerationReturnType = await new Promise(resolve => {
+      fetch(openAIUrl, {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${openAIAPIKey}`
+         },
+         body: JSON.stringify({input: confession})
+      })
+      .then(res => res.json())
+      .then(data => {
+         const isViolatingContent = data.results[0].flagged;
+         if(isViolatingContent) {
+            const moderationResult: TextModerationResult = data.results[0].categories;
+            const message = generateViolatingMessage(moderationResult);
+            resolve({isViolatingContent, message});
+         } else {
+            resolve({isViolatingContent, message: ""});
+         }
+      })
+      .catch(err => {
+         resolve({isViolatingContent: false, message: err.message, error: true})
+      });
+   });
+   
+   return promise;
 }

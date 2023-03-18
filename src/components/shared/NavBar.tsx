@@ -6,6 +6,13 @@ import logoImg from '~/assets/confess-me-logo.png';
 
 const img = "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTgwOTN8MHwxfHNlYXJjaHw0fHxjYXR8ZW58MHx8fHwxNjc4OTU1NDIx&ixlib=rb-4.0.3&q=80&w=1080";
 
+const getFormattedUserName = (name: string | null | undefined) => {
+   if(!name) return "User";
+   const firstName = name.split(" ")[0];
+   if(firstName.length > 10) return firstName.slice(0, 8) + "..";
+   return firstName;
+}
+
 export default function NavBar() {
    const { user } = useContext(AuthContext);
 
@@ -28,8 +35,10 @@ export default function NavBar() {
          </div>
 
          <div className="flex-none gap-2">
-               <div><p className="text-white font-semibold">Hey, { user?.displayName }</p></div>
-
+               <div className="text-[#bebef4] font-semibold pr-2 hover:text-[#c2c2d7]">
+                  <Link to="/status">Check post status</Link>
+               </div>
+               <div><p className="text-white font-semibold">Hey, { getFormattedUserName(user?.displayName) }</p></div>
                <div className="dropdown dropdown-end">
 
                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">

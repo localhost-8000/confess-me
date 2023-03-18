@@ -1,15 +1,16 @@
-import Footer from './Footer';
-import Link from '@mui/material/Link';
+import React from 'react';
 import MaxWidthContainerLayout from '~/layouts/MaxWidthContainerLayout';
+import ExtraPageLayout from './ExtraPageLayout';
 import PostCard from './PostCard';
-import React from 'react'
 import ShortLoading from './ShortLoading';
-import { AuthContext } from '../contexts/AuthContext';
-import { base64Decode } from '@firebase/util'
-import { getPostById } from '~/utils/firebaseUtils/postUtil';
-import { Post } from '~/types/post';
+
+import { base64Decode } from '@firebase/util';
+import { Link, useParams } from 'react-router-dom';
 import { setupFirebase } from '~/lib/firebase';
-import { useParams } from 'react-router-dom';
+import { Post } from '~/types/post';
+import { loadingMsg, snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
+import { getPostById } from '~/utils/firebaseUtils/postUtil';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default function PostView() {
    const { id } = useParams<{ id: string }>();
@@ -21,19 +22,26 @@ export default function PostView() {
          if(!id) return;
          try {
             if(!user) setupFirebase();
-            dispatch({type: "LOADING", payload: {loading: true}});
+
+            dispatch(loadingMsg(true));
+
             const decodedPostId = base64Decode(id);
-            if(!decodedPostId) return;
+            if(!decodedPostId) {
+               dispatch(snackBarDispatchMsg('Invalid URL', 'error'));
+               dispatch(loadingMsg(false));
+               return;
+            }
+
             getPostById(decodedPostId).then(res => {
                if(res) {
                   setPost(res);
                } else {
-                  dispatch({type: "LOADING", payload: {loading: false}});
+                  dispatch(loadingMsg(false));
                }
             });
          } catch (err) {
             console.log(err);
-            dispatch({type: "LOADING", payload: {loading: false}});
+            dispatch(loadingMsg(false));
          }
       }
       fetchPost();
@@ -41,11 +49,11 @@ export default function PostView() {
 
    React.useEffect(() => {
       if(!post) return;
-      dispatch({type: "LOADING", payload: {loading: false}});
+      dispatch(loadingMsg(false));
    }, [post]);
 
    return (
-      <>
+      <ExtraPageLayout title={post?.collegeData?.name || "Checkout Post"}>
          <MaxWidthContainerLayout>
             {loading ? <ShortLoading /> : 
                <div className="w-[100%] flex flex-col items-center">
@@ -54,12 +62,13 @@ export default function PostView() {
                </div>
             }
             { !user ? <div className="pt-2 text-white flex items-center justify-center">
-               <Link href="/" sx={{fontSize: '18px', marginTop: '6px', color: 'inherit'}} underline='hover'>Login to see more such confessions🫡</Link>
+               
+               <Link to="/" className="text-[18px] mt-2 text-inherit">Login to see more such confessions🫡</Link>
             </div> : null
             }
          </MaxWidthContainerLayout>
-         <Footer />
-      </>
+         
+      </ExtraPageLayout>
    )
 }
 
@@ -68,7 +77,7 @@ const PostNotFound = () => {
       <div className="text-white flex flex-col items-center">
          <h3 className="text-2xl ">Post not found!! Recheck your URL.</h3>
 
-         <Link href="/" sx={{fontSize: '18px', marginTop: '6px'}}>Go to Home</Link>
+         <Link to="/" className="text-[18px] mt-2">Go to Home</Link>
       </div>
    )
 }
