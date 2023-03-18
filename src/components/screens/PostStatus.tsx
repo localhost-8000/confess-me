@@ -20,20 +20,19 @@ export default function PostStatus() {
    }, [postStatus]);
 
    const findPostStatus = () => {
-      if (statusId.length !== 6) {
-         dispatch(snackBarDispatchMsg('Invalid StatusID', 'error'));
-         return;
-      }
       setLoading(true);
       getPostStatus(statusId).then(res => {
          if(!res) {
-            dispatch(snackBarDispatchMsg('Post not found', 'error'));
+            dispatch(snackBarDispatchMsg('Post not found!! Check if StatusID is correct.', 'error'));
             setLoading(false);
             return;
          }
-         console.log('client: ', res)
+        
          setPostStatus(res);
-      })
+      }).catch(err => {
+         dispatch(snackBarDispatchMsg('Error fetching post status! Check StatusID', 'error'));
+         setLoading(false);
+      });
    }
 
    return (
@@ -53,6 +52,7 @@ export default function PostStatus() {
                   onChange={e => setStatusId(e.target.value)}
                />
                <LoadingButton 
+                  disabled={statusId.length < 5}
                   variant="contained" 
                   loading={loading}
                   sx={{bgcolor: '#6D6D86', fontWeight: 'bold', marginTop: '12px'}}

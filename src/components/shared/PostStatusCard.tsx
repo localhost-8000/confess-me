@@ -73,8 +73,19 @@ export default function PostStatusCard(props: PostCardType) {
       </CardContent>
       <CardActions disableSpacing>
         <Chip label={post.status.toUpperCase()} color={getColor(post.status)} />
+        <Chip label={getMessage(post.status)} sx={{marginLeft: '6px'}} />
       </CardActions>
     </Card>
   );
 }
 
+const getMessage = (status: string) => {
+   switch(status) {
+      case 'approved':
+         return 'Your post is streaming live now.';
+      case 'rejected':
+         return 'Post rejected due to inappropriate content.';
+      default:
+         return 'Team still reviewing your post.';
+   }
+}

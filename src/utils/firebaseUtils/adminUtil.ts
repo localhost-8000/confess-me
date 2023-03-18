@@ -78,13 +78,11 @@ export const getPostStatus = async (statusId: string): Promise<PostWithStatus | 
    });
 
    if(status === null) {
-      const postId: string = await new Promise(resolve => {
-         generateDecodedPostId(statusId).then(postId => {
-            console.log("postId: ", postId)
-            resolve(postId);
-         });
-      });
+      const postId = generateDecodedPostId(statusId);
+      if(postId === null) return null;
+
       const post = await getPostById(postId);
+      
       if(post !== null) {
          postWithStatus = {
             ...post,

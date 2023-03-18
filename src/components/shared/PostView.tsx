@@ -1,5 +1,4 @@
 import Footer from './Footer';
-import Link from '@mui/material/Link';
 import MaxWidthContainerLayout from '~/layouts/MaxWidthContainerLayout';
 import PostCard from './PostCard';
 import React from 'react'
@@ -9,8 +8,9 @@ import { base64Decode } from '@firebase/util'
 import { getPostById } from '~/utils/firebaseUtils/postUtil';
 import { Post } from '~/types/post';
 import { setupFirebase } from '~/lib/firebase';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { loadingMsg, snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
+import ExtraPageLayout from './ExtraPageLayout';
 
 export default function PostView() {
    const { id } = useParams<{ id: string }>();
@@ -53,7 +53,7 @@ export default function PostView() {
    }, [post]);
 
    return (
-      <>
+      <ExtraPageLayout title={post?.collegeData?.name || "Checkout Post"}>
          <MaxWidthContainerLayout>
             {loading ? <ShortLoading /> : 
                <div className="w-[100%] flex flex-col items-center">
@@ -62,12 +62,13 @@ export default function PostView() {
                </div>
             }
             { !user ? <div className="pt-2 text-white flex items-center justify-center">
-               <Link href="/" sx={{fontSize: '18px', marginTop: '6px', color: 'inherit'}} underline='hover'>Login to see more such confessions🫡</Link>
+               
+               <Link to="/" className="text-[18px] mt-2 text-inherit">Login to see more such confessions🫡</Link>
             </div> : null
             }
          </MaxWidthContainerLayout>
-         <Footer />
-      </>
+         
+      </ExtraPageLayout>
    )
 }
 
@@ -76,7 +77,7 @@ const PostNotFound = () => {
       <div className="text-white flex flex-col items-center">
          <h3 className="text-2xl ">Post not found!! Recheck your URL.</h3>
 
-         <Link href="/" sx={{fontSize: '18px', marginTop: '6px'}}>Go to Home</Link>
+         <Link to="/" className="text-[18px] mt-2">Go to Home</Link>
       </div>
    )
 }
