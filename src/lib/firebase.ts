@@ -19,6 +19,7 @@ export const setupFirebase = () => {
          messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGINGSENDERID,
          appId: import.meta.env.VITE_FIREBASE_APPID,
       });
+      console.log('msg: ', import.meta.env.VITE_FIREBASE_MESSAGINGSENDERID);
       console.log('api: ', import.meta.env.VITE_FIREBASE_APIKEY);
   } catch (error) {
     console.error({error})
