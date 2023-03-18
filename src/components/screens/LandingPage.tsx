@@ -1,16 +1,23 @@
+import { useState } from 'react';
 import Footer from '../shared/Footer';
-
 import { AuthContext } from '../contexts/AuthContext';
 import { redirect } from 'react-router-dom';
 import { SignInButton } from '../domain/auth/SignInButton';
 import { useContext, useEffect } from 'react';
+import { Button } from '@mui/material';
+import ModalWrapper from '../shared/ModalWrapper';
 
 export default function LandingPage() {
    const { user } = useContext(AuthContext);
+   const [open, setOpen] = useState(false);
 
    useEffect(() => {
-      if(user) redirect("/home");
+      if(user) redirect("/");
    }, [user]);
+
+   const handleModalClose = () => {
+      setOpen(false);
+   }
 
   return (
     <div className="bg-[#333346] text-white">
@@ -60,6 +67,17 @@ export default function LandingPage() {
             <div className="mt-10 flex items-center justify-center gap-x-6">
                 <SignInButton />
             </div>
+            <Button sx={{marginTop: '1.5rem', color: 'white', fontWeight: 'bold'}} onClick={_ => setOpen(true)}>Why I need to SignIn ?</Button>
+            <ModalWrapper open={open} handleCloseCB={handleModalClose}>
+               At <b>confess-me</b>, we believe in providing a safe and positive platform for our users to share their thoughts and confessions.
+               <br /><br />
+               <b>We didn't link author information to posts</b>, so you can share your thoughts and confessions anonymously. However, we do require you to sign in to access some of our features, such as liking and commenting on posts. <br /><br />
+               By signing in, you can <b>like or dislike posts, report inappropriate content</b>, and help us keep the platform clean and positive. In addition, we may use your email address to send you <b>notifications and updates</b> about the platform in the future.
+               <br /><br />
+               We value your privacy and security, and have detailed our policies in our <b>Privacy Policy</b> and <b>Terms of Use</b> pages. We promise to never share your personal information with any third-party without your consent.
+               <br /><br />
+               We hope, we made it clear. If you have any questions, <b>submit your feedback by visiting our Contact Us page</b>.
+            </ModalWrapper>
           </div>
         </div>
         <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-35rem)]">
