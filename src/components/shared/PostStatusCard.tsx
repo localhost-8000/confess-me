@@ -1,26 +1,15 @@
-import * as React from 'react';
+import InterestsIcon from '@mui/icons-material/Interests';
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import IconButton from '@mui/material/IconButton';
-import InterestsIcon from '@mui/icons-material/Interests';
-import LikeChip from './LikeChip';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import PostMenu from './PostMenu';
-import ShareIcon from '@mui/icons-material/Share';
-
-import { AddOrUpdateFlag } from '~/types/extra';
-import { AuthActions } from '~/types/auth';
-import { AuthContext } from '../contexts/AuthContext';
-import { Box } from '@mui/material';
-import { Post, PostWithStatus } from '~/types/post';
-import { base64Encode } from '@firebase/util';
-import { convertFromRaw, Editor, EditorState } from 'draft-js';
-import { formatTimeAgo } from '~/utils/dateParser';
-import { reportPost, togglePostLike } from '~/utils/firebaseUtils/postUtil';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
 import Chip from '@mui/material/Chip';
+
+import { Box } from '@mui/material';
+import { convertFromRaw, Editor, EditorState } from 'draft-js';
+import { PostWithStatus } from '~/types/post';
+import { formatTimeAgo } from '~/utils/dateParser';
 
 interface PostCardType {
    post: PostWithStatus;
