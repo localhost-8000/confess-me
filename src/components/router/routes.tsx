@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
 import About from '../screens/About';
+import PostStatus from "../screens/PostStatus";
 import PostView from "../shared/PostView";
 import ProtectedRouteWrapper from "./ProtectedRouteWrapper";
 
@@ -32,6 +33,9 @@ const BaseRoutes: RouteObject[] = [{
    path: '/post/:id',
    element: <PostView />
 }, {
+   path: '/status',
+   element: <PostStatus />
+} ,{
    path: '*',
    element: <Page404Screen />,
 }];

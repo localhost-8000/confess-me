@@ -10,6 +10,7 @@ import { getPostById } from '~/utils/firebaseUtils/postUtil';
 import { Post } from '~/types/post';
 import { setupFirebase } from '~/lib/firebase';
 import { useParams } from 'react-router-dom';
+import { loadingMsg, snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
 
 export default function PostView() {
    const { id } = useParams<{ id: string }>();
@@ -21,19 +22,26 @@ export default function PostView() {
          if(!id) return;
          try {
             if(!user) setupFirebase();
-            dispatch({type: "LOADING", payload: {loading: true}});
+
+            dispatch(loadingMsg(true));
+
             const decodedPostId = base64Decode(id);
-            if(!decodedPostId) return;
+            if(!decodedPostId) {
+               dispatch(snackBarDispatchMsg('Invalid URL', 'error'));
+               dispatch(loadingMsg(false));
+               return;
+            }
+
             getPostById(decodedPostId).then(res => {
                if(res) {
                   setPost(res);
                } else {
-                  dispatch({type: "LOADING", payload: {loading: false}});
+                  dispatch(loadingMsg(false));
                }
             });
          } catch (err) {
             console.log(err);
-            dispatch({type: "LOADING", payload: {loading: false}});
+            dispatch(loadingMsg(false));
          }
       }
       fetchPost();
@@ -41,7 +49,7 @@ export default function PostView() {
 
    React.useEffect(() => {
       if(!post) return;
-      dispatch({type: "LOADING", payload: {loading: false}});
+      dispatch(loadingMsg(false));
    }, [post]);
 
    return (

@@ -25,7 +25,7 @@ type SignOutAction = {
    type: "SIGN_OUT";
 }
 
-type ErrorAction = {
+export type ErrorAction = {
    type: "ERROR";
    payload: {
       error: Error;
@@ -33,14 +33,14 @@ type ErrorAction = {
    }
 }
 
-type LoadingAction = {
+export type LoadingAction = {
    type: "LOADING";
    payload: {
       loading: boolean;
    }
 }
 
-type SnackbarAction = {
+export type SnackbarAction = {
    type: "SNACKBAR";
    payload: {
       open: boolean;
@@ -49,7 +49,7 @@ type SnackbarAction = {
    }
 }
 
-type AuthLoadingAction = {
+export type AuthLoadingAction = {
    type: "AUTH_LOADING";
    payload: {
       authLoading: boolean;

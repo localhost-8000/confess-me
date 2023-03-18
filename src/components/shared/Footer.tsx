@@ -9,7 +9,7 @@ export default function Footer() {
             <Link className="link link-hover" to="/terms">Terms of use</Link> 
             <Link className="link link-hover" to="/privacy">Privacy Policy</Link>
          </div> 
-         <div>
+         <div className="-mt-3">
             <p>Created with 💖. Copyright © 2023 - All right reserved</p>
          </div>
       </footer>

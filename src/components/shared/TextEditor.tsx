@@ -8,14 +8,19 @@ import Button from '@mui/material/Button';
 
 interface TextEditorProps {
    editorState: EditorState;
-   onChangeCB: (editorState: EditorState) => void;
    modalOpen: boolean;
+   onChangeCB: (editorState: EditorState) => void;
    handleModalCloseCB: () => void;
    saveConfessionCB: () => void;
 }
 
 export default function TextEditor(props: TextEditorProps) {
    const {editorState, onChangeCB, modalOpen, handleModalCloseCB, saveConfessionCB} = props;
+   const editorRef = React.useRef<Editor>(null);
+
+   React.useEffect(() => {
+      editorRef.current?.focus();
+   }, []);
 
    const handleKeyCommand = (command: string, editorState: EditorState) => {
       const newState = RichUtils.handleKeyCommand(
@@ -38,12 +43,13 @@ export default function TextEditor(props: TextEditorProps) {
                You can use <b>ctrl + b</b>, <i>ctrl + i</i>, <u>ctrl + u</u> to bold, italicize, and underline text. <i>We think 500 words are enough to express your feelings</i>.
                <br />
             </DialogContentText>
-            <div className="border-[2px] rounded-md border-[#333346] px-2 py-3 mt-2 min-h-[150px]">
+            <div className="border-[2px] rounded-md border-[#333346] px-2 py-3 mt-2 min-h-[150px] hover:cursor-text" onClick={_ => editorRef.current?.focus()} >
                <Editor 
                   editorState={editorState} 
                   handleKeyCommand={handleKeyCommand}
                   onChange={onChangeCB} 
                   placeholder={`Hey xyz,\nI want to confess ...\n\nWith love,\nabc`}
+                  ref={editorRef}
                />
             </div>
          </DialogContent>

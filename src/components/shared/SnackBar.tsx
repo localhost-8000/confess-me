@@ -48,7 +48,7 @@ export default function SnackBar() {
    return (
       <Snackbar 
          open={snackbar.open}
-         autoHideDuration={5000}
+         autoHideDuration={4000}
          onClose={handleClose}
          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
          sx={{ width: '40%', maxWidth: '100%', minWidth: '300px'}}
