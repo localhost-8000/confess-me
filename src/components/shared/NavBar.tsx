@@ -37,7 +37,7 @@ export default function NavBar() {
          <div className="flex-none gap-2">
                <div className="text-[#bebef4] font-semibold pr-2 hover:text-[#c2c2d7] hidden sm:block">
                   <Link to="/status">Check post status</Link>
-               </div>}
+               </div>
                <div><p className="text-white font-semibold">Hey, { getFormattedUserName(user?.displayName) }</p></div>
                <div className="dropdown dropdown-end">
 
