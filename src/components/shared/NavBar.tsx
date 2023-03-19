@@ -19,7 +19,7 @@ export default function NavBar() {
    const logOutUser = () => {
       const auth = useAuth();
       auth.signOut();
-      redirect("/");
+      redirect("/login");
    }
 
    return (
