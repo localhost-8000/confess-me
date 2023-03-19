@@ -71,11 +71,6 @@ export default function PostCard(props: PostCardType) {
    const [currentPost, setCurrentPost] = React.useState<Post>(props.post);
    const [userLikes, setUserLikes] = React.useState<boolean>(() => isUserLiked(user?.uid || "", post));
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-   const [openTooltip, setOpenTooltip] = React.useState<boolean>(false);
-
-   React.useEffect(() => {
-      if(user) setOpenTooltip(true);
-   }, [user]);
 
    React.useEffect(() => {
       if(updatePostCB) updatePostCB(currentPost, "update");
@@ -105,9 +100,6 @@ export default function PostCard(props: PostCardType) {
    }
 
    const closeMenu = () => { setAnchorEl(null); }
-   const openTooltipHandler = () => {
-      if(!user) setOpenTooltip(true);
-   }
 
    const reportPostHandler = () => {
       if(!post.id || !user) return;
