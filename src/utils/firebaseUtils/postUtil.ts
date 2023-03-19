@@ -158,7 +158,6 @@ export const reportPost = async (postId: string, userId: string) => {
 
 // Run test moderation api to check if the post contains any inappropriate content
 export const testModeration = async (confession: string): Promise<TextModerationReturnType> => {
-   console.log(confession)
    const openAIAPIKey = import.meta.env.VITE_OPENAI_API_KEY;
    const openAIUrl = "https://api.openai.com/v1/moderations";
 

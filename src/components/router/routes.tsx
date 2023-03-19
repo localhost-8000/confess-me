@@ -1,14 +1,14 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
-import About from '../screens/About';
-import PostStatus from "../screens/PostStatus";
-import PostView from "../shared/PostView";
-import ProtectedRouteWrapper from "./ProtectedRouteWrapper";
 
+const About = lazy(() => import('~/components/screens/About'))
 const AdminPanel = lazy(() => import('~/components/screens/AdminPanel'));
 const DevelopersInfo = lazy(() => import('~/components/screens/DevelopersInfo'));
 const HomePage = lazy(() => import('~/components/screens/HomePage'));
+const LandingPage = lazy(() => import('~/components/screens/LandingPage'));
 const Page404Screen = lazy(() => import('~/components/screens/Page404'));
+const PostStatus = lazy(() => import('~/components/screens/PostStatus'));
+const PostView = lazy(() => import('~/components/shared/PostView'));
 const PrivacyPolicy = lazy(() => import('~/components/screens/PrivacyPolicy'));
 const Profile = lazy(() => import('~/components/screens/Profile'));
 const TermsOfUse = lazy(() => import('~/components/screens/TermsOfUse'));
@@ -20,6 +20,9 @@ const BaseRoutes: RouteObject[] = [{
 }, {
    path: '/contact',
    element: <DevelopersInfo />
+}, {
+   path: '/login',
+   element: <LandingPage />
 }, {
    path: '/privacy',
    element: <PrivacyPolicy />
@@ -43,7 +46,7 @@ const BaseRoutes: RouteObject[] = [{
 export const getAppRoutes = () => {
    const ProtectedRoutes: RouteObject[] = [{
       path: '/',
-      element: <ProtectedRouteWrapper><HomePage /></ProtectedRouteWrapper>,
+      element: <HomePage />,
    }, {
       path: '/profile/:id',
       element: <Profile />

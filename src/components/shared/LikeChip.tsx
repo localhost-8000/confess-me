@@ -1,7 +1,6 @@
-import { AuthContext } from '../contexts/AuthContext';
-import { Chip } from '@mui/material';
-import { useContext } from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { Chip } from '@mui/material';
+import ToolTip from '~/layouts/tooltips/ToolTip';
 
 interface LikeChipProps {
    likesCount: number;
@@ -10,18 +9,20 @@ interface LikeChipProps {
 }
 
 function LikeChip(props: LikeChipProps) {
-   const { user } = useContext(AuthContext);
 
-   return <Chip 
-      aria-label="Like or Dislike" 
-      icon={<FavoriteBorderIcon />} 
-      label={props.likesCount} 
-      onClick={props.likeHandlerCB} 
-      color="secondary"
-      variant={props.isLiked ? "filled" : "outlined"} 
-      disabled={!user}
-      // sx={props.isLiked ? { bgcolor: '#333346' } : { color: '#333346'}}
-   />
+   return (
+      <ToolTip title="Login to like this post">
+         <Chip 
+            aria-label="Like or Dislike" 
+            icon={<FavoriteBorderIcon />} 
+            label={props.likesCount} 
+            onClick={props.likeHandlerCB} 
+            color="secondary"
+            variant={props.isLiked ? "filled" : "outlined"} 
+            // sx={props.isLiked ? { bgcolor: '#333346' } : { color: '#333346'}}
+         />
+      </ToolTip>
+   )
 }
 
 export default LikeChip

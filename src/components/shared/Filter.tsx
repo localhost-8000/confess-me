@@ -49,7 +49,7 @@ export default function Filter(props: FilterProps) {
    }
 
    return (
-      <div className="max-w-[1200px] mx-auto bg-[#333346] rounded-xl mt-6 p-4">
+      <div className="max-w-[1200px] mx-auto bg-[#333346] rounded-xl mt-6 p-3">
          <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
 
             <AccordionSummary
@@ -70,8 +70,8 @@ export default function Filter(props: FilterProps) {
                </Typography>
 
             </AccordionSummary>
-            <AccordionDetails sx={{display: 'flex'}} className="items-center justify-evenly">
-               <Paper elevation={3} sx={{ maxWidth: '380px', width: '40%', padding: '12px'}}>
+            <AccordionDetails sx={{display: 'flex'}} className="flex-col md:flex-row gap-4 items-center justify-evenly">
+               <Paper elevation={3} sx={{ maxWidth: '380px', width: '90%', padding: '10px'}} className="md:w-[40%]">
                   <Autocomplete
                      disablePortal
                      id="search-college"
@@ -83,7 +83,7 @@ export default function Filter(props: FilterProps) {
                      onChange={handleCollegeFilterChange}
                   />
                </Paper>
-               <Paper elevation={3} sx={{ maxWidth: '300px', width: '30%', padding: '12px'}}>
+               <Paper elevation={3} sx={{ maxWidth: '300px', width: '90%', padding: '10px'}} className="md:-w-[30%]">
                   <FormControl fullWidth>
                      <InputLabel id="demo-simple-select-label" sx={{marginTop: '4px'}}>Sort By</InputLabel>
                      <Select
@@ -100,7 +100,7 @@ export default function Filter(props: FilterProps) {
                      </Select>
                   </FormControl>
                </Paper>
-               <Button variant="contained" sx={{width: '20%', maxWidth: '200px', bgcolor: '#6D6D86', fontWeight: 'bold'}} onClick={ApplyFilters}>Apply</Button>
+               <Button variant="contained" sx={{width: '90%', maxWidth: '200px', bgcolor: '#6D6D86', fontWeight: 'bold'}} className="md:w-[60%]" onClick={ApplyFilters}>Apply</Button>
             </AccordionDetails>
          </Accordion>
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import MaxWidthContainerLayout from '~/layouts/MaxWidthContainerLayout';
 import ExtraPageLayout from './ExtraPageLayout';
 import PostCard from './PostCard';
 import ShortLoading from './ShortLoading';
@@ -53,8 +52,7 @@ export default function PostView() {
    }, [post]);
 
    return (
-      <ExtraPageLayout title={post?.collegeData?.name || "Checkout Post"}>
-         <MaxWidthContainerLayout>
+      <ExtraPageLayout title={"Checkout Post"}>
             {loading ? <ShortLoading /> : 
                <div className="w-[100%] flex flex-col items-center">
                   {post ? <PostCard post={post} /> 
@@ -64,10 +62,8 @@ export default function PostView() {
             { !user ? <div className="pt-2 text-white flex items-center justify-center">
                
                <Link to="/" className="text-[18px] mt-2 text-inherit">Login to see more such confessions🫡</Link>
-            </div> : null
+               </div> : null
             }
-         </MaxWidthContainerLayout>
-         
       </ExtraPageLayout>
    )
 }

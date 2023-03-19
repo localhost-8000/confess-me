@@ -20,6 +20,7 @@ import { base64Encode } from '@firebase/util';
 import { convertFromRaw, Editor, EditorState } from 'draft-js';
 import { formatTimeAgo } from '~/utils/dateParser';
 import { reportPost, togglePostLike } from '~/utils/firebaseUtils/postUtil';
+import ToolTip from '~/layouts/tooltips/ToolTip';
 
 interface PostCardType {
    post: Post;
@@ -95,7 +96,7 @@ export default function PostCard(props: PostCardType) {
    }
 
    const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-      setAnchorEl(event.currentTarget);
+      if(user) setAnchorEl(event.currentTarget);
    }
 
    const closeMenu = () => { setAnchorEl(null); }
@@ -123,10 +124,11 @@ export default function PostCard(props: PostCardType) {
           </Avatar>
         }
         action={
-            <>
-               <IconButton aria-label="settings" onClick={openMenu} disabled={!user}>
+            <> <ToolTip title="Login to report this post!">
+               <IconButton aria-label="settings" onClick={openMenu}>
                   <MoreVertIcon />
                </IconButton>
+               </ToolTip>
                <PostMenu anchorEl={anchorEl} handleCloseCB={closeMenu} reportPostCB={reportPostHandler} />
             </>
         }

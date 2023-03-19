@@ -40,7 +40,7 @@ export default function PostStatus() {
          <div className="w-full flex flex-col items-center">
             <Paper 
                elevation={3} 
-               sx={{ maxWidth: 500, width: '100%', marginBottom: '18px', padding: '12px'}} 
+               sx={{ maxWidth: 500, width: '100%', padding: '12px'}} 
                className="flex flex-col"
             >
                <TextField 

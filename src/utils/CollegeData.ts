@@ -41,4 +41,7 @@ export const colleges: College[] = [
 
    { name: 'National Institute of Technology, Warangal', 
       logo: 'https://drive.google.com/uc?export=view&id=106PjYAr5f5m_ddDovbxXOQ3pLiVE7PGO' },
+
+   { name: 'Institute of Engineering & Technology(IET), Lucknow', 
+      logo: 'https://drive.google.com/uc?export=view&id=1ykDncQTiC6P4F3_M-vb6JBRhNykFjwst' },
 ];
