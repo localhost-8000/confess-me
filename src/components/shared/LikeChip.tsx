@@ -11,7 +11,7 @@ interface LikeChipProps {
 function LikeChip(props: LikeChipProps) {
 
    return (
-      <ToolTip title="Login to like this post">
+      <ToolTip title="Login required to like!">
          <Chip 
             aria-label="Like or Dislike" 
             icon={<FavoriteBorderIcon />} 
