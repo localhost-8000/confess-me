@@ -32,8 +32,8 @@ export const validatePost = (college: College | null, confession: string) => {
       wordCount = getWordCount(editorState);
    }
 
-   if(wordCount < 20) {
-      errorMessage += "More than 20 words needed to express your thoughts.";
+   if(wordCount < 11) {
+      errorMessage += "11 is a auspicious number. So, please write at least 11 words.";
    }
 
    if(wordCount > 500) {
