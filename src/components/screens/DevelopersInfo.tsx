@@ -1,12 +1,27 @@
+import { logEvent } from 'firebase/analytics';
+import { useEffect } from 'react';
+import { useAnalytics } from '~/lib/firebase';
+
 import { Avatar, Divider, Link } from '@mui/material';
+
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import ExtraPageLayout from '../shared/ExtraPageLayout'
+import ExtraPageLayout from '../shared/ExtraPageLayout';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const img = "https://drive.google.com/uc?export=view&id=1ZoatOpdNojDjpT9HXaQB850oNu4FI3c1";
 
 export default function DevelopersInfo() {
+
+   useEffect(() => {
+      const analytics = useAnalytics();
+      logEvent(analytics, 'page_view', {
+         page_title: 'Contact Us',
+         page_location: window.location.href,
+         page_path: window.location.pathname,
+      });
+   }, []);
+
    return (
       <ExtraPageLayout title="Contact us">
          <div className="flex flex-col text-[#a5a5d2] pb-4">

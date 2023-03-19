@@ -20,6 +20,7 @@ export default function Main () {
          dispatch({type: "LOADING", payload: { loading: true }});
          onAuthStateChanged(auth, (user) => {
             if (user) {
+               
                dispatch({
                   type: "SIGN_IN",
                   payload: { user }

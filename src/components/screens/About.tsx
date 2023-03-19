@@ -1,6 +1,19 @@
+import { logEvent } from 'firebase/analytics';
+import { useEffect } from 'react';
+import { useAnalytics } from '~/lib/firebase';
+
 import ExtraPageLayout from '../shared/ExtraPageLayout';
 
 export default function About() {
+   useEffect(() => {
+      const analytics = useAnalytics();
+      logEvent(analytics, 'page_view', {
+         page_title: 'About Us',
+         page_location: window.location.href,
+         page_path: window.location.pathname,
+      });
+   }, []);
+   
    return (
       <ExtraPageLayout title="About Us">
          <p className="text-[18px]">Welcome to our secret confession website, a platform for sharing your deepest thoughts and feelings about your secret crush or love. Here, you can anonymously confess your innermost desires, whether it's a crush on your coworker, a love for your best friend, or a long-standing attraction to someone you've never met.

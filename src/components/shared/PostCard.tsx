@@ -16,11 +16,13 @@ import { AuthActions } from '~/types/auth';
 import { AuthContext } from '../contexts/AuthContext';
 import { Box } from '@mui/material';
 import { Post } from '~/types/post';
-import { base64Encode } from '@firebase/util';
+import { base64urlEncodeWithoutPadding } from '@firebase/util';
 import { convertFromRaw, Editor, EditorState } from 'draft-js';
 import { formatTimeAgo } from '~/utils/dateParser';
 import { reportPost, togglePostLike } from '~/utils/firebaseUtils/postUtil';
 import ToolTip from '~/layouts/tooltips/ToolTip';
+import { useAnalytics } from '~/lib/firebase';
+import { logEvent } from 'firebase/analytics';
 
 interface PostCardType {
    post: Post;
@@ -40,12 +42,10 @@ const isUserLiked = (userId: string, post: Post) => {
    return false;
 }
 
-const copyToClipboard = (text: string | undefined, dispatch: (action: AuthActions) => void) => {
-   if(!text) return;
-
+const copyToClipboard = (text: string, dispatch: (action: AuthActions) => void) => {
    const navigator = window.navigator;
-   const encodedId = base64Encode(text);
-   const shareLink = `${window.location.origin}/post/${encodedId}`.slice(0, -1);
+   const encodedId = base64urlEncodeWithoutPadding(text);
+   const shareLink = `${window.location.origin}/post/${encodedId}`;
 
    if(!navigator.clipboard) {
       dispatch({type: "SNACKBAR", payload: {
@@ -115,6 +115,17 @@ export default function PostCard(props: PostCardType) {
       });
    }
 
+   const sharePost = () => {
+      if(!post.id) return;
+      copyToClipboard(post.id, dispatch);
+      const analytics = useAnalytics();
+      logEvent(analytics, "share", {
+         method: "copy",
+         content_type: "post",
+         item_id: post.id,
+      });
+   }
+
   return (
     <Card sx={{ maxWidth: 600, width: '100%', marginBottom: '18px' }}>
       <CardHeader
@@ -148,7 +159,7 @@ export default function PostCard(props: PostCardType) {
       </CardContent>
       <CardActions disableSpacing>
         <LikeChip likesCount={currentPost.likesCount} isLiked={userLikes} likeHandlerCB={postLikeHandler} />
-        <IconButton aria-label="share" sx={{marginLeft: '8px'}} onClick={_ => copyToClipboard(post.id, dispatch)}><ShareIcon /></IconButton>
+        <IconButton aria-label="share" sx={{marginLeft: '8px'}} onClick={sharePost}><ShareIcon /></IconButton>
       </CardActions>
     </Card>
   );

@@ -11,12 +11,14 @@ import Footer from '../shared/Footer';
 import Loading from '../shared/Loading';
 import NavBar from '../shared/NavBar';
 import PostCard from '../shared/PostCard';
+import { useAnalytics } from '~/lib/firebase';
+import { logEvent } from 'firebase/analytics';
 
 function sortByMostRecent(posts: Post[]) {
    return posts.sort((a, b) => {
-     // Convert the timestamps to Date objects for comparison
-     const dateA = new Date(a.createdAt as string).getTime();
-     const dateB = new Date(b.createdAt as string).getTime();
+     // Convert the timestamps to Date objects for comparison.
+     const dateA: number = new Date(a.createdAt as string).getTime();
+     const dateB: number = new Date(b.createdAt as string).getTime();
  
      // Sort in descending order (most recent first)
      return dateB.valueOf() - dateA.valueOf();
@@ -48,6 +50,15 @@ export default function HomePage() {
 
       return filteredPosts;
    }, [posts, filterOptions]);
+
+   useEffect(() => {
+      const analytics = useAnalytics();
+      logEvent(analytics, "page_view", {
+         page_title: "Home",
+         page_location: window.location.href,
+         page_path: "/home"
+      });
+   }, []);
 
    useEffect(() => {
       const fetchPosts = () => {
