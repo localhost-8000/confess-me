@@ -27,7 +27,7 @@ export default function ToolTip(props: ToolTipProps) {
          open={open} 
          onOpen={handleOpen} 
          onClose={handleClose}
-         
+         enterTouchDelay={0}
       >
          {props.children}
       </BootstrapTooltip>

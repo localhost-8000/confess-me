@@ -62,6 +62,7 @@ export default function DevelopersInfo() {
                   <div className="ml-4">
                      <h4 className="text-2xl font-bold">Rahul Tiwari</h4>
                      <h5 className="text-md font-semibold">Application Developer @Google</h5>
+                     <h5 className="text-sm font-semibold">4th year, CSE, NIT Agartala</h5>
                   </div>
                </div>
                <div className="text-center w-full md:w-1/2">

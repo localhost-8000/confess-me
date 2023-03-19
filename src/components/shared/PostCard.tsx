@@ -135,7 +135,7 @@ export default function PostCard(props: PostCardType) {
           </Avatar>
         }
         action={
-            <> <ToolTip title="Login to report this post!">
+            <> <ToolTip title="Login required!">
                <IconButton aria-label="settings" onClick={openMenu}>
                   <MoreVertIcon />
                </IconButton>
