@@ -1,9 +1,10 @@
 import { Button } from "@mui/material";
-import { GoogleAuthProvider, signInWithPopup,  UserCredential } from "firebase/auth";
-import { useAuth } from "~/lib/firebase";
+import { GoogleAuthProvider, signInWithPopup,  UserCredential, getAdditionalUserInfo } from "firebase/auth";
+import { useAnalytics, useAuth } from "~/lib/firebase";
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import { useContext } from "react";
 import { AuthContext } from "~/components/contexts/AuthContext";
+import { logEvent } from "firebase/analytics";
 
 export const SignInButton = () => {
    const { dispatch } = useContext(AuthContext);
@@ -16,6 +17,17 @@ export const SignInButton = () => {
       const result : UserCredential = await signInWithPopup(auth, provider);
 
       if (result.user) {
+         const newUser = getAdditionalUserInfo(result)?.isNewUser
+         const analytics = useAnalytics();
+         if(newUser) {
+            logEvent(analytics, "sign_up", {
+               method: "Google",
+            });
+         } else {
+            logEvent(analytics, "login", {
+               method: "Google",
+            });
+         }
          dispatch({
             type: "SIGN_IN",
             payload: {

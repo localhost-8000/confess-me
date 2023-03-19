@@ -39,7 +39,7 @@ export default function TextEditor(props: TextEditorProps) {
          <DialogTitle sx={{fontWeight: 'bold'}}>Write your confession</DialogTitle>
          <DialogContent>
             <DialogContentText>
-               Don't use any profanity or hate speech. Try not to include name of any person. Such posts won't be approved.
+               Don't use any profanity or hate speech. Such posts won't be approved. You can include references of the person you want to confess to.<br />
                You can use <b>ctrl + b</b>, <i>ctrl + i</i>, <u>ctrl + u</u> to bold, italicize, and underline text. <i>We think 500 words are enough to express your feelings</i>.
                <br />
             </DialogContentText>

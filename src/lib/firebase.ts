@@ -1,10 +1,12 @@
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { getAuth, Auth, connectAuthEmulator } from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
+import { getAnalytics } from 'firebase/analytics';
 
 let auth: Auth;
 let database: ReturnType<typeof getDatabase>;
 let firebaseApp: FirebaseApp;
+let analytics: ReturnType<typeof getAnalytics>;
 
 const useEmulator = () => import.meta.env.VITE_USE_FIREBASE_EMULATOR;
 
@@ -19,6 +21,7 @@ export const setupFirebase = () => {
          messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGINGSENDERID,
          appId: import.meta.env.VITE_FIREBASE_APPID,
       });
+      analytics = getAnalytics(firebaseApp);
   } catch (error) {
     console.error({error})
   }
@@ -39,3 +42,7 @@ export const useDatabase = () => {
    return database;
 }
 
+export const useAnalytics = () => {
+   if(!analytics) analytics = getAnalytics(firebaseApp);
+   return analytics;
+}
