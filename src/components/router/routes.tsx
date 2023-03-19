@@ -5,6 +5,7 @@ const About = lazy(() => import('~/components/screens/About'))
 const AdminPanel = lazy(() => import('~/components/screens/AdminPanel'));
 const DevelopersInfo = lazy(() => import('~/components/screens/DevelopersInfo'));
 const HomePage = lazy(() => import('~/components/screens/HomePage'));
+const LandingPage = lazy(() => import('~/components/screens/LandingPage'));
 const Page404Screen = lazy(() => import('~/components/screens/Page404'));
 const PostStatus = lazy(() => import('~/components/screens/PostStatus'));
 const PostView = lazy(() => import('~/components/shared/PostView'));
@@ -19,6 +20,9 @@ const BaseRoutes: RouteObject[] = [{
 }, {
    path: '/contact',
    element: <DevelopersInfo />
+}, {
+   path: '/login',
+   element: <LandingPage />
 }, {
    path: '/privacy',
    element: <PrivacyPolicy />

@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import Footer from '../shared/Footer';
-import { AuthContext } from '../contexts/AuthContext';
-import { redirect } from 'react-router-dom';
-import { SignInButton } from '../domain/auth/SignInButton';
-import { useContext, useEffect } from 'react';
 import { Button } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
+import { redirect } from 'react-router-dom';
+import ButtonWithIcon from '~/layouts/buttons/ButtonWithIcon';
+import { AuthContext } from '../contexts/AuthContext';
+import { SignInButton } from '../domain/auth/SignInButton';
+import Footer from '../shared/Footer';
 import ModalWrapper from '../shared/ModalWrapper';
 
 export default function LandingPage() {
@@ -54,7 +54,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <div className="relative rounded-full py-1 px-3 text-[16px] leading-6 ring-1 ring-gray-300">
-               Have you ever had a crush or love that you couldn't talk about with anyone?
+               Have you ever had a crush or love 💖 that you couldn't talk about with anyone?
             </div>
           </div>
           <div className="text-center">
@@ -64,8 +64,9 @@ export default function LandingPage() {
             <p className="mt-6 text-lg leading-8 max-w-[1200px] mx-auto">
                You'll be surprised at how much better you'll feel just by getting it off your chest. And who knows, you might even find someone who shares your feelings and can provide you with the support you need.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
+            <div className="mt-10 flex flex-col gap-6 md:flex-row items-center justify-center gap-x-6">
                 <SignInButton />
+                <ButtonWithIcon />
             </div>
             <Button sx={{marginTop: '1.5rem', color: 'white', fontWeight: 'bold'}} onClick={_ => setOpen(true)}>Why I need to SignIn ?</Button>
             <ModalWrapper open={open} handleCloseCB={handleModalClose}>

@@ -20,6 +20,7 @@ import { base64Encode } from '@firebase/util';
 import { convertFromRaw, Editor, EditorState } from 'draft-js';
 import { formatTimeAgo } from '~/utils/dateParser';
 import { reportPost, togglePostLike } from '~/utils/firebaseUtils/postUtil';
+import ToolTip from '~/layouts/tooltips/ToolTip';
 
 interface PostCardType {
    post: Post;
@@ -70,6 +71,11 @@ export default function PostCard(props: PostCardType) {
    const [currentPost, setCurrentPost] = React.useState<Post>(props.post);
    const [userLikes, setUserLikes] = React.useState<boolean>(() => isUserLiked(user?.uid || "", post));
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+   const [openTooltip, setOpenTooltip] = React.useState<boolean>(false);
+
+   React.useEffect(() => {
+      if(user) setOpenTooltip(true);
+   }, [user]);
 
    React.useEffect(() => {
       if(updatePostCB) updatePostCB(currentPost, "update");
@@ -95,10 +101,13 @@ export default function PostCard(props: PostCardType) {
    }
 
    const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-      setAnchorEl(event.currentTarget);
+      if(user) setAnchorEl(event.currentTarget);
    }
 
    const closeMenu = () => { setAnchorEl(null); }
+   const openTooltipHandler = () => {
+      if(!user) setOpenTooltip(true);
+   }
 
    const reportPostHandler = () => {
       if(!post.id || !user) return;
@@ -123,10 +132,11 @@ export default function PostCard(props: PostCardType) {
           </Avatar>
         }
         action={
-            <>
-               <IconButton aria-label="settings" onClick={openMenu} disabled={!user}>
+            <> <ToolTip title="Login to report this post!">
+               <IconButton aria-label="settings" onClick={openMenu}>
                   <MoreVertIcon />
                </IconButton>
+               </ToolTip>
                <PostMenu anchorEl={anchorEl} handleCloseCB={closeMenu} reportPostCB={reportPostHandler} />
             </>
         }

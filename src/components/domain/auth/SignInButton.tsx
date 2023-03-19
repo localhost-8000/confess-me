@@ -39,7 +39,7 @@ export const SignInButton = () => {
                backgroundColor: "#554eba",
             }
          }}>
-            Let's go
+            Sign in with Google
       </Button>
    );
 };
