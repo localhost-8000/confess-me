@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ButtonWithIcon from '~/layouts/buttons/ButtonWithIcon';
 import { AuthContext } from '../contexts/AuthContext';
 import { SignInButton } from '../domain/auth/SignInButton';
@@ -10,9 +10,10 @@ import ModalWrapper from '../shared/ModalWrapper';
 export default function LandingPage() {
    const { user } = useContext(AuthContext);
    const [open, setOpen] = useState(false);
+   const navigate = useNavigate();
 
    useEffect(() => {
-      if(user) redirect("/");
+      if(user) navigate("/");
    }, [user]);
 
    const handleModalClose = () => {

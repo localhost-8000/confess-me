@@ -10,19 +10,22 @@ import LikeChip from './LikeChip';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PostMenu from './PostMenu';
 import ShareIcon from '@mui/icons-material/Share';
+import ToolTip from '~/layouts/tooltips/ToolTip';
 
 import { AddOrUpdateFlag } from '~/types/extra';
 import { AuthActions } from '~/types/auth';
 import { AuthContext } from '../contexts/AuthContext';
 import { Box } from '@mui/material';
 import { Post } from '~/types/post';
+
 import { base64urlEncodeWithoutPadding } from '@firebase/util';
 import { convertFromRaw, Editor, EditorState } from 'draft-js';
 import { formatTimeAgo } from '~/utils/dateParser';
 import { reportPost, togglePostLike } from '~/utils/firebaseUtils/postUtil';
-import ToolTip from '~/layouts/tooltips/ToolTip';
 import { useAnalytics } from '~/lib/firebase';
 import { logEvent } from 'firebase/analytics';
+import { snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
+import NormalChip from '~/layouts/chips/NormalChip';
 
 interface PostCardType {
    post: Post;
@@ -48,24 +51,24 @@ const copyToClipboard = (text: string, dispatch: (action: AuthActions) => void) 
    const shareLink = `${window.location.origin}/post/${encodedId}`;
 
    if(!navigator.clipboard) {
-      dispatch({type: "SNACKBAR", payload: {
-         open: true, message: `Share link: ${shareLink}`, severity: "success"
-      }});
+      dispatch(snackBarDispatchMsg(`Share link: ${shareLink}`, 'success'));
       return;
    }
 
    navigator.clipboard.writeText(shareLink).then(() => {
-      dispatch({type: "SNACKBAR", payload: {
-         open: true, message: "Copied to clipboard", severity: "success"
-      }});
+      dispatch(snackBarDispatchMsg("Copied to clipboard.", 'success'));
    }, _ => {
-      dispatch({type: "SNACKBAR", payload: {
-         open: true, message: `Share link: ${shareLink}`, severity: "success"
-      }});
+      dispatch(snackBarDispatchMsg(`Share link: ${shareLink}`, 'success'));
    });
 }
 
+const isAdminLikes = (post: Post) => {
+   const adminId = import.meta.env.VITE_ADMIN_UID;
+   if(post.likes && post.likes[adminId]) return true;
+}
+
 export default function PostCard(props: PostCardType) {
+   const analytics = useAnalytics();
    const { post, updatePostCB } = props;
    const { user, dispatch } = React.useContext(AuthContext);
    const [currentPost, setCurrentPost] = React.useState<Post>(props.post);
@@ -89,10 +92,15 @@ export default function PostCard(props: PostCardType) {
                likesCount: (data as Post).likesCount,
                likes: (data as Post).likes,
             });
+            logEvent(analytics, "post_like", {
+               post_id: post.id,
+               post_college: post.collegeData?.name,
+               userId: user.uid,
+            });
          }
       }).catch(_ => {
-         dispatch({ type: "SNACKBAR", payload: { open: true, message: "Error while liking the post!!", severity: "error" }});
-      })
+         dispatch(snackBarDispatchMsg("Error while liking the post.", "error"));
+      });
    }
 
    const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -118,7 +126,7 @@ export default function PostCard(props: PostCardType) {
    const sharePost = () => {
       if(!post.id) return;
       copyToClipboard(post.id, dispatch);
-      const analytics = useAnalytics();
+      
       logEvent(analytics, "share", {
          method: "copy",
          content_type: "post",
@@ -159,6 +167,7 @@ export default function PostCard(props: PostCardType) {
       </CardContent>
       <CardActions disableSpacing>
         <LikeChip likesCount={currentPost.likesCount} isLiked={userLikes} likeHandlerCB={postLikeHandler} />
+        {isAdminLikes(currentPost) && <NormalChip title="Admin loved it" />}
         <IconButton aria-label="share" sx={{marginLeft: '8px'}} onClick={sharePost}><ShareIcon /></IconButton>
       </CardActions>
     </Card>
