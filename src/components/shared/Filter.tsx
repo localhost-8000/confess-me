@@ -47,7 +47,8 @@ export default function Filter(props: FilterProps) {
    const clearFilter = () => {
       setSortBy('none');
       setCollege(null);
-      ApplyFilters();
+      setExpanded(false);
+      props.applyFilterOnPostsCB({college: null, sortBy: 'none'});
    }
 
    const ApplyFilters = () => {
