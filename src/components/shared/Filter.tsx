@@ -47,6 +47,7 @@ export default function Filter(props: FilterProps) {
    const clearFilter = () => {
       setSortBy('none');
       setCollege(null);
+      ApplyFilters();
    }
 
    const ApplyFilters = () => {
