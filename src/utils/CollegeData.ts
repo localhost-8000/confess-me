@@ -6,6 +6,9 @@ export type College = {
 }
 
 export const colleges: College[] = [
+   { name: 'Institute of Engineering & Technology(IET), Lucknow', 
+      logo: 'https://drive.google.com/uc?export=view&id=1ykDncQTiC6P4F3_M-vb6JBRhNykFjwst' },
+
    { name: 'National Institute of Technology, Jaipur', 
       logo: 'https://drive.google.com/uc?export=view&id=1GUVzhH99lS_nprYBqsbx-t096aQaIwfS' },
 
@@ -42,6 +45,9 @@ export const colleges: College[] = [
    { name: 'National Institute of Technology, Warangal', 
       logo: 'https://drive.google.com/uc?export=view&id=106PjYAr5f5m_ddDovbxXOQ3pLiVE7PGO' },
 
-   { name: 'Institute of Engineering & Technology(IET), Lucknow', 
-      logo: 'https://drive.google.com/uc?export=view&id=1ykDncQTiC6P4F3_M-vb6JBRhNykFjwst' },
+   { name: 'Sagar Institute of Research & Technology, Bhopal', 
+      logo: 'https://drive.google.com/uc?export=view&id=1V5piy-OxsN0lqXUAA56joG_qJwhFFmvO' },
+
+   { name: 'Vellore Institute of Technology', 
+      logo: 'https://drive.google.com/uc?export=view&id=1qGGQwdxdrmjDRSZddhsCEXFk4Tqz7ifo' },
 ];

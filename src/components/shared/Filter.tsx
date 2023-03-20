@@ -1,3 +1,7 @@
+import { College, colleges } from '~/utils/CollegeData';
+import { FilterOption, sortOptions } from '~/types/filter';
+import { Paper } from '@mui/material';
+
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -11,9 +15,6 @@ import React from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { College, colleges } from '~/utils/CollegeData';
-import { FilterOption, sortOptions } from '~/types/filter';
-import { Paper } from '@mui/material';
 
 interface FilterProps {
    filterOptions: FilterOption;
@@ -41,6 +42,13 @@ export default function Filter(props: FilterProps) {
       const newCollege = value;
 
       setCollege(newCollege);
+   }
+
+   const clearFilter = () => {
+      setSortBy('none');
+      setCollege(null);
+      setExpanded(false);
+      props.applyFilterOnPostsCB({college: null, sortBy: 'none'});
    }
 
    const ApplyFilters = () => {
@@ -101,6 +109,8 @@ export default function Filter(props: FilterProps) {
                   </FormControl>
                </Paper>
                <Button variant="contained" sx={{width: '90%', maxWidth: '200px', bgcolor: '#6D6D86', fontWeight: 'bold'}} className="md:w-[60%]" onClick={ApplyFilters}>Apply</Button>
+               
+               <Button variant="outlined" sx={{width: '90%', maxWidth: '140px', fontWeight: 'bold'}} className="md:w-[50%]" onClick={clearFilter} color="warning">Clear</Button>
             </AccordionDetails>
          </Accordion>
 
