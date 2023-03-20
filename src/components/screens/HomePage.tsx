@@ -5,14 +5,15 @@ import { FilterOption } from '~/types/filter';
 import { Post } from '~/types/post';
 import { getAllPosts } from '~/utils/firebaseUtils/postUtil';
 
+import { useAnalytics } from '~/lib/firebase';
+import { logEvent } from 'firebase/analytics';
+
 import CreatePost from '../shared/CreatePost';
 import Filter from '../shared/Filter';
 import Footer from '../shared/Footer';
-import Loading from '../shared/Loading';
 import NavBar from '../shared/NavBar';
 import PostCard from '../shared/PostCard';
-import { useAnalytics } from '~/lib/firebase';
-import { logEvent } from 'firebase/analytics';
+import ShortLoading from '../shared/ShortLoading';
 
 function sortByMostRecent(posts: Post[]) {
    return posts.sort((a, b) => {
@@ -29,12 +30,14 @@ function sortByMostRecent(posts: Post[]) {
 export default function HomePage() {
    const { dispatch } = useContext(AuthContext);
    const [posts, setPosts] = useState<Post[]>([]);
+   const [loading, setLoading] = useState<boolean>(false);
    const [filterOptions, setFilterOptions] = useState<FilterOption>({
       college: null,
       sortBy: 'none'
    });
 
    const filteredPosts = useMemo(() => {
+      setLoading(true);
       const { college, sortBy } = filterOptions;
       let filteredPosts = [...posts];
 
@@ -47,7 +50,7 @@ export default function HomePage() {
       if(sortBy === 'most_liked') {
          filteredPosts = filteredPosts.sort((a, b) => b.likesCount - a.likesCount);
       }
-
+      setLoading(false);
       return filteredPosts;
    }, [posts, filterOptions]);
 
@@ -63,19 +66,21 @@ export default function HomePage() {
    useEffect(() => {
       const fetchPosts = () => {
          try {
-            dispatch({type: "LOADING", payload: {loading: true}});
+            setLoading(true);
             getAllPosts().then(posts => {
                setPosts(sortByMostRecent(posts));
-               dispatch({type: "LOADING", payload: {loading: false}});
             });
          } catch (err) {
             dispatch({type: "SNACKBAR", payload: {open: true, message: "Something went wrong", severity: "error"}});
-         } finally {
-            dispatch({type: "LOADING", payload: {loading: false}});
+            setLoading(false);
          }
       }
       fetchPosts();
    }, []);
+
+   useEffect(() => {
+      if(posts.length !== 0) setLoading(false);
+   }, [posts]);
 
    const addOrUpdatePost = (updatedPost: Post, flag: AddOrUpdateFlag) => {
       if(flag === "add") 
@@ -93,17 +98,22 @@ export default function HomePage() {
       <>
          <NavBar />
          <Filter applyFilterOnPostsCB={filterOptionHandler} filterOptions={filterOptions} />
+
          <div className="max-w-[1200px] mx-auto bg-[#333346] rounded-xl mt-8 px-2 py-4 h-fit max-h-[calc(100vh-6.75rem)] overflow-y-scroll scroll-smooth scrollbar-thin scrollbar-track-[#b0b0d4] scrollbar-thumb-[#3e3e50] scrollbar-track-rounded-md scrollbar-thumb-rounded-md">
             <div className="w-[100%] flex flex-col items-center">
+
                <CreatePost addPostCB={addOrUpdatePost}/>
-               {filteredPosts.map(post => (
-                  <PostCard key={post.id} post={post} updatePostCB={addOrUpdatePost}/>
-               ))}
-               <p className="text-white text-[18px] my-2">No more confessions🫡. Check back later!</p>
+
+               { loading ? <ShortLoading loading={loading} /> : 
+                  filteredPosts.map(post => (
+                     <PostCard key={post.id} post={post} updatePostCB={addOrUpdatePost}/>
+                  ))
+               }
+
+               {!loading && <p className="text-white text-[18px] my-2">No more confessions🫡. Check back later!</p>}
             </div>
          </div>
          <Footer />
-         <Loading />
       </>
    )
 }

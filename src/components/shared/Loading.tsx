@@ -3,13 +3,13 @@ import { Backdrop, CircularProgress } from '@mui/material';
 import { useContext } from 'react';
 
 export default function Loading() {
-   const { loading, dispatch } = useContext(AuthContext);
+   const { authLoading, dispatch } = useContext(AuthContext);
 
    const handleClose = () => {
       dispatch({
-         type: "LOADING",
+         type: "AUTH_LOADING",
          payload: {
-            loading: false
+            authLoading: false
          }
       });
    }
@@ -17,7 +17,7 @@ export default function Loading() {
    return (
       <Backdrop
          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-         open={loading}
+         open={authLoading}
          onClick={handleClose}
          >
          <CircularProgress color="inherit" />
