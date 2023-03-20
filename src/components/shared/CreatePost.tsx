@@ -1,19 +1,23 @@
+import { AuthContext } from '../contexts/AuthContext';
+import { AddOrUpdateFlag } from '~/types/extra';
+import { EditorState, convertToRaw } from 'draft-js';
+import { LoadingButton } from '@mui/lab';
+import { Paper } from '@mui/material'
+import { Post } from '~/types/post';
+
+import { colleges } from '~/utils/CollegeData';
+import { createNewPost, testModeration } from '~/utils/firebaseUtils/postUtil';
+import { logEvent } from 'firebase/analytics';
+import { snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
+import { useAnalytics } from '~/lib/firebase';
+import { validatePost } from '~/utils/postUtil';
+
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 import React from 'react'
 import TextEditor from './TextEditor';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { createNewPost, testModeration } from '~/utils/firebaseUtils/postUtil';
-import { colleges } from '~/utils/CollegeData';
-import { EditorState, convertToRaw } from 'draft-js';
-import { Paper } from '@mui/material'
-import { Post } from '~/types/post';
-import { AuthContext } from '../contexts/AuthContext';
-import { AddOrUpdateFlag } from '~/types/extra';
-import { validatePost } from '~/utils/postUtil';
-import { snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
-import { LoadingButton } from '@mui/lab';
 import MaxWidthModal from '~/layouts/modals/MaxWidthModal';
 
 interface InfoModal {
@@ -26,6 +30,7 @@ interface CreatePostProps {
 }
 
 export default function CreatePost(props: CreatePostProps) {
+   const analytics = useAnalytics();
    const { dispatch } = React.useContext(AuthContext);
    const [editorState, setEditorState] = React.useState(() => EditorState.createEmpty());
    const [infoModalOpen, setInfoModalOpen] = React.useState<InfoModal>({
@@ -83,7 +88,11 @@ export default function CreatePost(props: CreatePostProps) {
          createNewPost(post).then(val => {
             // props.addPostCB(val, "add");
             clearFields();
-            
+
+            logEvent(analytics, "create_post", {
+               college: val.collegeData?.name
+            });
+
             setInfoModalOpen({
                open: true,
                statusId: val.statusId
