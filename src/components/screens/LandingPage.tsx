@@ -1,11 +1,12 @@
+import { AuthContext } from '../contexts/AuthContext';
 import { Button } from '@mui/material';
+import { SignInButton } from '../domain/auth/SignInButton';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import ButtonWithIcon from '~/layouts/buttons/ButtonWithIcon';
-import { AuthContext } from '../contexts/AuthContext';
-import { SignInButton } from '../domain/auth/SignInButton';
+import MaxWidthModal from '~/layouts/modals/MaxWidthModal';
 import Footer from '../shared/Footer';
-import ModalWrapper from '../shared/ModalWrapper';
 
 export default function LandingPage() {
    const { user } = useContext(AuthContext);
@@ -70,7 +71,7 @@ export default function LandingPage() {
                 <ButtonWithIcon />
             </div>
             <Button sx={{marginTop: '1.5rem', color: 'white', fontWeight: 'bold'}} onClick={_ => setOpen(true)}>Why I need to SignIn ?</Button>
-            <ModalWrapper open={open} handleCloseCB={handleModalClose}>
+            <MaxWidthModal title="Why signup is needed?" open={open} handleCloseCB={handleModalClose}>
                At <b>confess-me</b>, we believe in providing a safe and positive platform for our users to share their thoughts and confessions.
                <br /><br />
                <b>We didn't link author information to posts</b>, so you can share your thoughts and confessions anonymously. However, we do require you to sign in to access some of our features, such as liking and commenting on posts. <br /><br />
@@ -79,7 +80,7 @@ export default function LandingPage() {
                We value your privacy and security, and have detailed our policies in our <b>Privacy Policy</b> and <b>Terms of Use</b> pages. We promise to never share your personal information with any third-party without your consent.
                <br /><br />
                We hope, we made it clear. If you have any questions, <b>submit your feedback by visiting our Contact Us page</b>.
-            </ModalWrapper>
+            </MaxWidthModal>
           </div>
         </div>
         <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-35rem)]">

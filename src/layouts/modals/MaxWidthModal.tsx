@@ -1,18 +1,20 @@
+import { Button } from '@mui/material';
+
 import React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
-import { Button } from '@mui/material';
 
-interface ModalWrapperProps {
-   open: boolean;
+interface MaxWidthModalProps {
    children: React.ReactNode;
+   open: boolean;
+   title: string;
    handleCloseCB: () => void;
 }
 
-export default function ModalWrapper(props: ModalWrapperProps) {
+export default function MaxWidthModal(props: MaxWidthModalProps) {
 
    return (
       <Dialog
@@ -21,14 +23,14 @@ export default function ModalWrapper(props: ModalWrapperProps) {
         open={props.open}
         onClose={props.handleCloseCB}
       >
-         <DialogTitle>Why you need signup...?</DialogTitle>
+         <DialogTitle>{ props.title }</DialogTitle>
          <DialogContent>
             <DialogContentText>
                { props.children }
             </DialogContentText>
          </DialogContent>
          <DialogActions>
-            <Button onClick={props.handleCloseCB}>Close</Button>
+            <Button onClick={props.handleCloseCB} variant="outlined" color="info">Close</Button>
          </DialogActions>
       </Dialog>
    )

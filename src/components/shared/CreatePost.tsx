@@ -12,9 +12,14 @@ import { Post } from '~/types/post';
 import { AuthContext } from '../contexts/AuthContext';
 import { AddOrUpdateFlag } from '~/types/extra';
 import { validatePost } from '~/utils/postUtil';
-import { loadingMsg, snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
+import { snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
 import { LoadingButton } from '@mui/lab';
+import MaxWidthModal from '~/layouts/modals/MaxWidthModal';
 
+interface InfoModal {
+   open: boolean;
+   statusId: string;
+}
 
 interface CreatePostProps {
    addPostCB: (post: Post, flag: AddOrUpdateFlag) => void;
@@ -23,6 +28,10 @@ interface CreatePostProps {
 export default function CreatePost(props: CreatePostProps) {
    const { dispatch } = React.useContext(AuthContext);
    const [editorState, setEditorState] = React.useState(() => EditorState.createEmpty());
+   const [infoModalOpen, setInfoModalOpen] = React.useState<InfoModal>({
+      open: false,
+      statusId: '',
+   });
    const [modalOpen, setModalOpen] = React.useState(false);
    const [loading, setLoading] = React.useState(false);
 
@@ -75,13 +84,11 @@ export default function CreatePost(props: CreatePostProps) {
             // props.addPostCB(val, "add");
             clearFields();
             
-            // copy statusId to clipboard
-            window.navigator.clipboard.writeText(val.statusId).then(() => {
-               const msg = `Thank you for submitting your confession! Your post is currently being reviewed by our team. StatusID: ${val.statusId}. Please use this ID to check the status of your post. It's also copied to your clipboard. Please save it for future reference.`;
-   
-               dispatch(snackBarDispatchMsg(msg, "success"));
-               setLoading(false);
+            setInfoModalOpen({
+               open: true,
+               statusId: val.statusId
             });
+            setLoading(false);
          });
       });
    }
@@ -134,6 +141,14 @@ export default function CreatePost(props: CreatePostProps) {
             handleModalCloseCB={handleModalClose} 
             saveConfessionCB={saveConfession}
          />
+         <MaxWidthModal 
+            title="Your post is created." 
+            open={infoModalOpen.open} 
+            handleCloseCB={() => setInfoModalOpen({open: false, statusId: ''})}
+         >
+            Thank you for submitting your confession! Your post is currently being reviewed by our team. 
+            <br /><br /> <b>Status ID: { infoModalOpen.statusId }</b><br /> <br />Please use this ID to check the status of your post. Please save it for future reference.
+         </MaxWidthModal>
          <div className="flex mt-4 items-center justify-end">
             <LoadingButton 
                color="info" 
