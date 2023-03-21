@@ -6,6 +6,9 @@ export type College = {
 }
 
 export const colleges: College[] = [
+   { name: 'Ajay Kumar Garg Engineering College, Ghaziabad', 
+      logo: 'https://drive.google.com/uc?export=view&id=15wQwU1nd-eN-LlcjEK08Outzh4r3eJK9' },
+
    { name: 'Institute of Engineering & Technology(IET), Lucknow', 
       logo: 'https://drive.google.com/uc?export=view&id=1ykDncQTiC6P4F3_M-vb6JBRhNykFjwst' },
 
