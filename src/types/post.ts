@@ -15,6 +15,7 @@ export type Post = {
    likes?: { [key: string]: boolean };
    createdAt?: string;
    reportCounts?: number;
+   commentsCount?: number;
 }
 
 export type PostWithStatus = Post & PendingPostAttr;
@@ -33,4 +34,12 @@ export type TextModerationReturnType = {
    isViolatingContent: boolean;
    message: string | undefined;
    error?: boolean;
+}
+
+export type PostComment = {
+   id?: string;
+   comment: string;
+   authorName: string;
+   authorPhotoUrl: string;
+   createdAt: string;
 }

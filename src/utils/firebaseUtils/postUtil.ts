@@ -21,7 +21,8 @@ export const createNewPost = async (newPost: Post) => {
       id: newPostKey as string,
       createdAt: Date.now().toString(),
       statusId: generateEncodedStatusId(newPostKey as string),
-      status: "pending"
+      status: "pending",
+      commentsCount: 0,
    }
 
    await new Promise(resolve => {
