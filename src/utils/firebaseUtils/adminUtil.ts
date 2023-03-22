@@ -32,8 +32,15 @@ export const approvePost = async (post: Post) => {
 
    await new Promise(resolve => {
       remove(postRef).then(() => {
-         // const newPostKey = push(ref(db, 'posts')).key;
-         set(newPostRef, post).then(() => {
+         const newPost: Post = {
+            id: post.id,
+            collegeData: post.collegeData,
+            confession: post.confession,
+            createdAt: post.createdAt,
+            likesCount: post.likesCount,
+         };
+         console.log(newPost)
+         set(newPostRef, newPost).then(() => {
             resolve('success');
          });
       });
