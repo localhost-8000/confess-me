@@ -1,11 +1,14 @@
-import React from 'react'
-import { Avatar } from '@mui/material';
-import Button from '@mui/material/Button';
 import { AuthContext } from '../contexts/AuthContext';
-import { addCommentToPost } from '~/utils/databaseOps/comment';
-import { snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
-import LoadingBtn from '~/layouts/buttons/LoadingBtn';
+import { Avatar } from '@mui/material';
 import { Link } from 'react-router-dom';
+
+import { addCommentToPost } from '~/utils/databaseOps/comment';
+import { logEvent } from 'firebase/analytics';
+import { snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
+import { useAnalytics } from '~/lib/firebase';
+
+import React from 'react'
+import LoadingBtn from '~/layouts/buttons/LoadingBtn';
 
 interface AddCommentProps {
    postId: string | undefined;
@@ -28,6 +31,13 @@ export default function AddComment(props: AddCommentProps) {
          if(res === "success") {
             setComment("");
             dispatch(snackBarDispatchMsg("Comment added!", "success"));
+
+            const analytics = useAnalytics();
+            logEvent(analytics, "comment_added", {
+               content_type: 'comment',
+               item_id: props.postId,
+            });
+
          } else {
             dispatch(snackBarDispatchMsg("Error adding comment!", "error"));
          }
