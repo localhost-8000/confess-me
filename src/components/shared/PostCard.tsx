@@ -22,10 +22,14 @@ import { base64urlEncodeWithoutPadding } from '@firebase/util';
 import { convertFromRaw, Editor, EditorState } from 'draft-js';
 import { formatTimeAgo } from '~/utils/dateParser';
 import { reportPost, togglePostLike } from '~/utils/firebaseUtils/postUtil';
-import { useAnalytics } from '~/lib/firebase';
+import { useAnalytics, useDatabase } from '~/lib/firebase';
 import { logEvent } from 'firebase/analytics';
 import { snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
 import NormalChip from '~/layouts/chips/NormalChip';
+import Collapse from '@mui/material/Collapse';
+import Comment from '../comment/Comment';
+import Divider from '@mui/material/Divider';
+import { onChildChanged, onValue, ref } from 'firebase/database';
 
 interface PostCardType {
    post: Post;
@@ -38,11 +42,6 @@ const getEditorContent = (confession: string) => {
    const rawContent = convertFromRaw(json);
    const editorState = EditorState.createWithContent(rawContent);
    return editorState;
-}
-
-const isUserLiked = (userId: string, post: Post) => {
-   if(post.likes && post.likes[userId]) return true;
-   return false;
 }
 
 const copyToClipboard = (text: string, dispatch: (action: AuthActions) => void) => {
@@ -69,16 +68,52 @@ const isAdminLikes = (post: Post) => {
 
 export default function PostCard(props: PostCardType) {
    const analytics = useAnalytics();
-   const { post, updatePostCB } = props;
+   const { post } = props;
    const { user, dispatch } = React.useContext(AuthContext);
    const [currentPost, setCurrentPost] = React.useState<Post>(props.post);
-   const [userLikes, setUserLikes] = React.useState<boolean>(() => isUserLiked(user?.uid || "", post));
+   const [userLikes, setUserLikes] = React.useState<boolean>(false);
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+   const [expandComment, setExpandComment] = React.useState<boolean>(false);
 
    React.useEffect(() => {
-      if(updatePostCB) updatePostCB(currentPost, "update");
-      setUserLikes(isUserLiked(user?.uid || "", currentPost));
-   }, [currentPost, currentPost.likesCount, currentPost.likes]);
+      const db = useDatabase();
+      const postLikesCountRef = ref(db, `posts/${post.id}/likesCount`);
+
+      const postLikesCountValue = onValue(postLikesCountRef, snapshot => {
+         if(snapshot.exists()) {
+            setCurrentPost({
+               ...currentPost,
+               [snapshot.key as string]: snapshot.val(),
+            })
+         } 
+      });
+
+      return postLikesCountValue;
+   }, []);
+
+   React.useEffect(() => {
+      const db = useDatabase();
+      const commentsCountRef = ref(db, `posts/${post.id}/commentsCount`);
+
+      return onValue(commentsCountRef, snapshot => {
+         if(snapshot.exists()) {
+            setCurrentPost({
+               ...currentPost,
+               [snapshot.key as string]: snapshot.val(),
+            });
+         } 
+      })
+   }, []);
+
+   React.useEffect(() => {
+      const db = useDatabase();
+      const userLikesRef = ref(db, `posts/${post.id}/likes/${user?.uid}`);
+      return onValue(userLikesRef, snapshot => {
+         let likes = false;
+         if(snapshot.exists()) likes = true;
+         setUserLikes(likes);
+      });
+   }, []);
 
    const postLikeHandler = () => {
       if(!post.id) return;
@@ -87,11 +122,11 @@ export default function PostCard(props: PostCardType) {
       togglePostLike(post.id, user.uid)
       .then((data: Post | string) => {
          if(data !== "error") {
-            setCurrentPost({
-               ...currentPost,
-               likesCount: (data as Post).likesCount,
-               likes: (data as Post).likes,
-            });
+            // setCurrentPost({
+            //    ...currentPost,
+            //    likesCount: (data as Post).likesCount,
+            //    likes: (data as Post).likes,
+            // });
             logEvent(analytics, "post_like", {
                post_id: post.id,
                post_college: post.collegeData?.name,
@@ -134,6 +169,10 @@ export default function PostCard(props: PostCardType) {
       });
    }
 
+   const handleExpandComment = () => {
+      setExpandComment(!expandComment);
+   }
+
   return (
     <Card sx={{ maxWidth: 600, width: '100%', marginBottom: '18px' }}>
       <CardHeader
@@ -166,11 +205,20 @@ export default function PostCard(props: PostCardType) {
         </Box>
       </CardContent>
       <CardActions disableSpacing>
-        <LikeChip likesCount={currentPost.likesCount} isLiked={userLikes} likeHandlerCB={postLikeHandler} />
-        {isAdminLikes(currentPost) && <NormalChip title="Admin loved it" />}
-        <IconButton aria-label="share" sx={{marginLeft: '8px'}} onClick={sharePost}><ShareIcon /></IconButton>
+         <LikeChip likesCount={currentPost.likesCount} isLiked={userLikes} likeHandlerCB={postLikeHandler} />
+         {isAdminLikes(currentPost) && <NormalChip title="Admin loved it" />}
+         <IconButton 
+            aria-label="share" 
+            sx={{marginLeft: '8px'}} 
+            onClick={sharePost}>
+               <ShareIcon />
+            </IconButton>
+         <LikeChip likesCount={currentPost.commentsCount || 0} isLiked={expandComment} likeHandlerCB={handleExpandComment} isCommentChip />
       </CardActions>
+      <Collapse in={expandComment} timeout="auto" sx={{paddingBottom: '12px'}}>
+         <Divider sx={{width: '80%', maxWidth: '301px', margin: 'auto', borderColor: '#6d6d8659'}} />
+         <Comment postId={post.id} handleCloseCommentsCB={() => setExpandComment(false)} />
+      </Collapse>
     </Card>
   );
 }
-

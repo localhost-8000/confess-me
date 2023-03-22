@@ -24,7 +24,7 @@ function sortByMostRecent(posts: Post[]) {
      // Sort in descending order (most recent first)
      return dateB.valueOf() - dateA.valueOf();
    });
- }
+}
  
 
 export default function HomePage() {

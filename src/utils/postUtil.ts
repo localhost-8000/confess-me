@@ -81,3 +81,8 @@ export const generateDecodedPostId = (statusCode: string): string | null => {
    const decodedId = base64Decode(statusCode);
    return decodedId;
 }
+
+export const sortByMostRecent = (d1: string, d2: string) => {
+   // Sort in descending order (most recent first)
+   return Number(d2) - Number(d1);
+}
