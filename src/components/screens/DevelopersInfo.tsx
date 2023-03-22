@@ -23,7 +23,7 @@ export default function DevelopersInfo() {
    }, []);
 
    return (
-      <ExtraPageLayout title="Contact us">
+      <ExtraPageLayout title="Feedback matters">
          <div className="flex flex-col text-[#a5a5d2] pb-4">
             <div className="text-center">
                <h4 className="text-xl font-bold border-b-2 border-b-[#7c7ca9] pb-2">Tell us what you like and what you don't</h4>
