@@ -1,17 +1,3 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import IconButton from '@mui/material/IconButton';
-import InterestsIcon from '@mui/icons-material/Interests';
-import LikeChip from './LikeChip';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import PostMenu from './PostMenu';
-import ShareIcon from '@mui/icons-material/Share';
-import ToolTip from '~/layouts/tooltips/ToolTip';
-
 import { AddOrUpdateFlag } from '~/types/extra';
 import { AuthActions } from '~/types/auth';
 import { AuthContext } from '../contexts/AuthContext';
@@ -21,15 +7,30 @@ import { Post } from '~/types/post';
 import { base64urlEncodeWithoutPadding } from '@firebase/util';
 import { convertFromRaw, Editor, EditorState } from 'draft-js';
 import { formatTimeAgo } from '~/utils/dateParser';
-import { reportPost, togglePostLike } from '~/utils/firebaseUtils/postUtil';
-import { useAnalytics, useDatabase } from '~/lib/firebase';
 import { logEvent } from 'firebase/analytics';
+import { onValue, ref } from 'firebase/database';
+import { reportPost, togglePostLike } from '~/utils/firebaseUtils/postUtil';
 import { snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
-import NormalChip from '~/layouts/chips/NormalChip';
+import { useAnalytics, useDatabase } from '~/lib/firebase';
+
+import Avatar from '@mui/material/Avatar';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import Comment from '../comment/Comment';
 import Divider from '@mui/material/Divider';
-import { onChildChanged, onValue, ref } from 'firebase/database';
+import IconButton from '@mui/material/IconButton';
+import InterestsIcon from '@mui/icons-material/Interests';
+import LikeChip from './LikeChip';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import NormalChip from '~/layouts/chips/NormalChip';
+import PostMenu from './PostMenu';
+import React from 'react';
+import ShareIcon from '@mui/icons-material/Share';
+import ToolTip from '~/layouts/tooltips/ToolTip';
+
 
 interface PostCardType {
    post: Post;
@@ -61,11 +62,6 @@ const copyToClipboard = (text: string, dispatch: (action: AuthActions) => void) 
    });
 }
 
-const isAdminLikes = (post: Post) => {
-   const adminId = import.meta.env.VITE_ADMIN_UID;
-   if(post.likes && post.likes[adminId]) return true;
-}
-
 export default function PostCard(props: PostCardType) {
    const analytics = useAnalytics();
    const { post } = props;
@@ -74,6 +70,7 @@ export default function PostCard(props: PostCardType) {
    const [userLikes, setUserLikes] = React.useState<boolean>(false);
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
    const [expandComment, setExpandComment] = React.useState<boolean>(false);
+   const [isAdminLikes, setIsAdminLikes] = React.useState<boolean>(false);
 
    React.useEffect(() => {
       const db = useDatabase();
@@ -110,8 +107,16 @@ export default function PostCard(props: PostCardType) {
       const userLikesRef = ref(db, `posts/${post.id}/likes/${user?.uid}`);
       return onValue(userLikesRef, snapshot => {
          let likes = false;
-         if(snapshot.exists()) likes = true;
+         let adminLikes = false;
+
+         if(snapshot.exists()) {
+            likes = true;
+            const adminId = import.meta.env.VITE_ADMIN_UID;
+            if(user?.uid === adminId) adminLikes = true;
+         }
+
          setUserLikes(likes);
+         setIsAdminLikes(adminLikes);
       });
    }, []);
 
@@ -122,11 +127,6 @@ export default function PostCard(props: PostCardType) {
       togglePostLike(post.id, user.uid)
       .then((data: Post | string) => {
          if(data !== "error") {
-            // setCurrentPost({
-            //    ...currentPost,
-            //    likesCount: (data as Post).likesCount,
-            //    likes: (data as Post).likes,
-            // });
             logEvent(analytics, "post_like", {
                post_id: post.id,
                post_college: post.collegeData?.name,
@@ -206,7 +206,7 @@ export default function PostCard(props: PostCardType) {
       </CardContent>
       <CardActions disableSpacing>
          <LikeChip likesCount={currentPost.likesCount} isLiked={userLikes} likeHandlerCB={postLikeHandler} />
-         {isAdminLikes(currentPost) && <NormalChip title="Admin loved it" />}
+         {isAdminLikes ? <NormalChip title="Admin loved it" /> : null}
          <IconButton 
             aria-label="share" 
             sx={{marginLeft: '8px'}} 
