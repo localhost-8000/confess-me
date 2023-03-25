@@ -2,7 +2,6 @@ import { AuthContext } from '../contexts/AuthContext';
 import { AddOrUpdateFlag } from '~/types/extra';
 import { EditorState, convertToRaw } from 'draft-js';
 import { LoadingButton } from '@mui/lab';
-import { Paper } from '@mui/material'
 import { Post } from '~/types/post';
 
 import { colleges } from '~/utils/CollegeData';
@@ -17,8 +16,8 @@ import Button from '@mui/material/Button';
 import React from 'react'
 import TextEditor from './TextEditor';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import MaxWidthModal from '~/layouts/modals/MaxWidthModal';
+import AccordianWrapper from '~/layouts/AccordianWrapper';
 
 interface InfoModal {
    open: boolean;
@@ -86,7 +85,6 @@ export default function CreatePost(props: CreatePostProps) {
          }
 
          createNewPost(post).then(val => {
-            // props.addPostCB(val, "add");
             clearFields();
 
             logEvent(analytics, "create_post", {
@@ -113,8 +111,7 @@ export default function CreatePost(props: CreatePostProps) {
    }
 
   return (
-      <Paper elevation={3} sx={{ maxWidth: 600, width: '100%', marginBottom: '18px', padding: '12px'}}>
-         <Typography variant="h5" sx={{fontWeight: 'bold', marginY: '4px'}}>Compose your confession</Typography>
+      <AccordianWrapper title="Create your confession">
          <Autocomplete
             disablePortal
             value={post.collegeData}
@@ -126,10 +123,11 @@ export default function CreatePost(props: CreatePostProps) {
             }}
             id="select-college"
             options={colleges}
-            sx={{ width: '100%', marginY: '10px' }}
+            sx={{ width: '100%', marginBottom: '10px' }}
             getOptionLabel={(option) => option.name}
             renderInput={(params) => <TextField {...params} label="Select College" />} 
          />
+
          <div className="flex items-center">
             <Button variant="outlined" onClick={handleClickOpen} sx={{marginTop: '6px', color: '#333346', fontWeight: 'bold', border: '1px solid #6D6D86'}}>
                Start Writing
@@ -150,6 +148,7 @@ export default function CreatePost(props: CreatePostProps) {
             handleModalCloseCB={handleModalClose} 
             saveConfessionCB={saveConfession}
          />
+
          <MaxWidthModal 
             title="Your post is created." 
             open={infoModalOpen.open} 
@@ -158,6 +157,7 @@ export default function CreatePost(props: CreatePostProps) {
             Thank you for submitting your confession! Your post is currently being reviewed by our team. 
             <br /><br /> <b>Status ID: { infoModalOpen.statusId }</b><br /> <br />Please use this ID to check the status of your post. Please save it for future reference.
          </MaxWidthModal>
+
          <div className="flex mt-4 items-center justify-end">
             <LoadingButton 
                color="info" 
@@ -169,6 +169,6 @@ export default function CreatePost(props: CreatePostProps) {
             </LoadingButton>
             <Button color="warning" onClick={clearFields}>Clear</Button>
          </div>
-    </Paper>    
+      </AccordianWrapper>
   )
 }

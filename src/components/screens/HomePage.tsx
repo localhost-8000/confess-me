@@ -14,6 +14,7 @@ import Footer from '../shared/Footer';
 import NavBar from '../shared/NavBar';
 import PostCard from '../shared/PostCard';
 import ShortLoading from '../shared/ShortLoading';
+import FeedTab from '~/layouts/tabs/FeedTab';
 
 function sortByMostRecent(posts: Post[]) {
    return posts.sort((a, b) => {
@@ -97,21 +98,22 @@ export default function HomePage() {
    return (
       <>
          <NavBar />
-         <Filter applyFilterOnPostsCB={filterOptionHandler} filterOptions={filterOptions} />
 
-         <div className="max-w-[1200px] mx-auto bg-[#333346] rounded-xl mt-8 px-2 py-4 h-fit max-h-[calc(100vh-6.75rem)] overflow-y-scroll scroll-smooth scrollbar-thin scrollbar-track-[#b0b0d4] scrollbar-thumb-[#3e3e50] scrollbar-track-rounded-md scrollbar-thumb-rounded-md">
-            <div className="w-[100%] flex flex-col items-center">
+         {/* <Filter applyFilterOnPostsCB={filterOptionHandler} filterOptions={filterOptions} /> */}
 
-               <CreatePost addPostCB={addOrUpdatePost}/>
+         <div className="max-w-[1200px] mx-auto bg-[#333346] rounded-xl mt-8 h-fit max-h-[calc(100vh-6.75rem)]">
+            {/* <div className="w-[100%] flex flex-col items-center"> */}
+               {/* <CreatePost addPostCB={addOrUpdatePost}/> */}
+               <FeedTab />
 
-               { loading ? <ShortLoading loading={loading} /> : 
+               {/* { loading ? <ShortLoading loading={loading} /> : 
                   filteredPosts.map(post => (
                      <PostCard key={post.id} post={post} updatePostCB={addOrUpdatePost}/>
                   ))
                }
 
-               {!loading && <p className="text-white text-[18px] my-2">No more confessions🫡. Check back later!</p>}
-            </div>
+               {!loading && <p className="text-white text-[18px] my-2">No more confessions🫡. Check back later!</p>} */}
+            {/* </div> */}
          </div>
          <Footer />
       </>
