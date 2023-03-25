@@ -23,7 +23,7 @@ export default function NavBar() {
    }
 
    return (
-      <div className="navbar bg-[#333346] mt-3 max-w-[1200px] mx-auto rounded-xl">
+      <div className="navbar bg-[#333346] mt-3 max-w-[1200px] mx-auto rounded-lg">
 
          <div className="flex-1">
             <Link to="/about" className="btn btn-ghost normal-case text-xl text-white">

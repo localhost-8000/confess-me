@@ -2,60 +2,54 @@ import * as React from 'react';
 // import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import { useEffect } from 'react';
 import TabPanel from './TabPanel';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import TabIcons from './TabIcons';
+import HomeFeed from '~/components/feed/HomeFeed';
+import TrendingFeed from '~/components/feed/TrendingFeed';
+import { getTrendingPosts } from '~/utils/databaseOps/post';
+import { Post } from '~/types/post';
+import CreatePost from '~/components/shared/CreatePost';
+import CreateConfession from '~/components/post/CreateConfession';
 
 export default function FeedTab() {
    const theme = useTheme();
-  const [value, setValue] = React.useState(0);
+   const [value, setValue] = React.useState(0);
+   const [trendingPosts, setTrendingPosts] = React.useState<Post[]>([]);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
+   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+      setValue(newValue);
+   };
 
-  const handleChangeIndex = (index: number) => {
-    setValue(index);
-  };
+   useEffect(() => {
+      // const fetchTrendingPosts = () => {
+      //    getTrendingPosts().then(posts => {
+      //       setTrendingPosts(posts);
+      //    });
+      // }
+      // fetchTrendingPosts();
+   }, []);
 
-   return (
-      <>
-      <AppBar position="static">
+
+   return <>
+      <AppBar position="sticky" sx={{ bgcolor: '#71718c', borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}>
          <TabIcons value={value} handleChangeCB={handleChange} />
       </AppBar>
-      {/* <SwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={value}
-        onChangeIndex={handleChangeIndex}
-      > */}
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          Item One
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          Item Two
-        </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
-          Item Three
-        </TabPanel>
-      {/* </SwipeableViews> */}
-      </>
-   )
+      
+      <TabPanel value={value} index={0} dir={theme.direction}>
+         <HomeFeed />
+      </TabPanel>
+
+      <TabPanel value={value} index={1} dir={theme.direction}>
+         <TrendingFeed />
+      </TabPanel>
+
+      <TabPanel value={value} index={2} dir={theme.direction}>
+         <CreateConfession />
+      </TabPanel>
+      <TabPanel value={value} index={3} dir={theme.direction}>
+         Item Three
+      </TabPanel>
+   </>
 }
 
-function a11yProps(index: number) {
-   return {
-     id: `full-width-tab-${index}`,
-     'aria-controls': `full-width-tabpanel-${index}`,
-   };
-}
-
-const HomeTabIcon = (): React.ReactElement => {
-   return (
-      <>
-         <AddCircleOutlineIcon fontSize="large" />
-         <span className="text-[11px]">Create</span>
-      </>
-   )
-}
