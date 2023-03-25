@@ -1,17 +1,18 @@
+import { base64urlEncodeWithoutPadding } from '@firebase/util';
+import { formatTimeAgo } from '~/utils/dateParser';
+import { getEditorContent } from '~/utils/postUtil';
+import { logEvent } from 'firebase/analytics';
+import { onValue, ref } from 'firebase/database';
+import { reportPost, togglePostLike } from '~/utils/firebaseUtils/postUtil';
+import { snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
+
+import { useAnalytics, useDatabase } from '~/lib/firebase';
 import { AddOrUpdateFlag } from '~/types/extra';
 import { AuthActions } from '~/types/auth';
 import { AuthContext } from '../contexts/AuthContext';
 import { Box } from '@mui/material';
 import { Post } from '~/types/post';
-
-import { base64urlEncodeWithoutPadding } from '@firebase/util';
-import { convertFromRaw, Editor, EditorState } from 'draft-js';
-import { formatTimeAgo } from '~/utils/dateParser';
-import { logEvent } from 'firebase/analytics';
-import { onValue, ref } from 'firebase/database';
-import { reportPost, togglePostLike } from '~/utils/firebaseUtils/postUtil';
-import { snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
-import { useAnalytics, useDatabase } from '~/lib/firebase';
+import { TextEditor } from '../post/TextEditor';
 
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
@@ -35,14 +36,6 @@ import ToolTip from '~/layouts/tooltips/ToolTip';
 interface PostCardType {
    post: Post;
    updatePostCB?: (updatedPost: Post, flag: AddOrUpdateFlag) => void;
-}
-
-const getEditorContent = (confession: string) => {
-   if(!confession) return EditorState.createEmpty();
-   const json = JSON.parse(confession);
-   const rawContent = convertFromRaw(json);
-   const editorState = EditorState.createWithContent(rawContent);
-   return editorState;
 }
 
 const copyToClipboard = (text: string, dispatch: (action: AuthActions) => void) => {
@@ -196,13 +189,13 @@ export default function PostCard(props: PostCardType) {
         subheaderTypographyProps={{color: '#333346'}}
       />
       <CardContent sx={{marginTop: '-6px'}} className="border-y-2 border-[#a5a5ba]">
-        <Box sx={{marginX: '-8px', marginY: '-10px', fontSize: '18px'}} className="p-2 bg-gray-100 rounded-lg">
-         <Editor 
-            editorState={getEditorContent(post.confession)}
-            onChange={() => {}}
-            readOnly={true}
-         />
-        </Box>
+         <Box sx={{marginX: '-8px', marginY: '-10px', fontSize: '18px'}} className="p-2 bg-gray-100 rounded-lg">
+            <TextEditor 
+               editorState={getEditorContent(post.confession)}
+               onChangeCB={() => {}}
+               isReadOnly={true}
+            />
+         </Box>
       </CardContent>
       <CardActions disableSpacing>
          <LikeChip likesCount={currentPost.likesCount} isLiked={userLikes} likeHandlerCB={postLikeHandler} />
