@@ -9,8 +9,8 @@ import HomeFeed from '~/components/feed/HomeFeed';
 import TrendingFeed from '~/components/feed/TrendingFeed';
 import { getTrendingPosts } from '~/utils/databaseOps/post';
 import { Post } from '~/types/post';
-import CreatePost from '~/components/shared/CreatePost';
 import CreateConfession from '~/components/post/CreateConfession';
+import SearchFilter from '~/components/post/SearchFilter';
 
 export default function FeedTab() {
    const theme = useTheme();
@@ -48,7 +48,7 @@ export default function FeedTab() {
          <CreateConfession />
       </TabPanel>
       <TabPanel value={value} index={3} dir={theme.direction}>
-         Item Three
+         <SearchFilter />
       </TabPanel>
    </>
 }
