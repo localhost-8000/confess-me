@@ -1,13 +1,16 @@
-import { LoadingButton } from '@mui/lab'
-import Paper from '@mui/material/Paper'
+import { getPostStatus } from '~/utils/firebaseUtils/adminUtil';
+import { snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
+
+import { AuthContext } from '../contexts/AuthContext';
+import { LoadingButton } from '@mui/lab';
+import { PostWithStatus } from '~/types/post';
+
+import ExtraPageLayout from '../shared/ExtraPageLayout';
+import Paper from '@mui/material/Paper';
+import PostStatusCard from '../shared/PostStatusCard';
+import React from 'react';
 import TextField from '@mui/material/TextField'
-import React from 'react'
-import { PostWithStatus } from '~/types/post'
-import { snackBarDispatchMsg } from '~/utils/dispatchActionsUtil'
-import { getPostStatus } from '~/utils/firebaseUtils/adminUtil'
-import { AuthContext } from '../contexts/AuthContext'
-import ExtraPageLayout from '../shared/ExtraPageLayout'
-import PostStatusCard from '../shared/PostStatusCard'
+import LoadingBtn from '~/layouts/buttons/LoadingBtn';
 
 export default function PostStatus() {
    const { dispatch } = React.useContext(AuthContext);
@@ -36,7 +39,7 @@ export default function PostStatus() {
    }
 
    return (
-      <ExtraPageLayout title="Check post status">
+      <ExtraPageLayout title="Post status">
          <div className="w-full flex flex-col items-center">
             <Paper 
                elevation={3} 
@@ -51,14 +54,13 @@ export default function PostStatus() {
                   value={statusId}
                   onChange={e => setStatusId(e.target.value)}
                />
-               <LoadingButton 
-                  disabled={statusId.length < 5}
-                  variant="contained" 
+               <LoadingBtn 
                   loading={loading}
+                  onClick={findPostStatus}
+                  text="Find status"
                   sx={{bgcolor: '#6D6D86', fontWeight: 'bold', marginTop: '12px'}}
-                  onClick={findPostStatus}>
-                     Find status
-                  </LoadingButton>
+                  disabled={statusId.length < 5}
+               />
             </Paper>
             {postStatus && <PostStatusCard post={postStatus} />}
          </div>

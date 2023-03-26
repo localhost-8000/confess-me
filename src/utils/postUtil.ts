@@ -1,6 +1,4 @@
 import { convertFromRaw, EditorState } from "draft-js";
-import { SnackbarAction } from "~/types/auth";
-import { AlertSeverity } from "~/types/extra";
 import { TextModerationResult } from "~/types/post";
 import { College } from "./CollegeData";
 import { base64urlEncodeWithoutPadding, base64Decode } from "@firebase/util";
@@ -85,4 +83,11 @@ export const generateDecodedPostId = (statusCode: string): string | null => {
 export const sortByMostRecent = (d1: string, d2: string) => {
    // Sort in descending order (most recent first)
    return Number(d2) - Number(d1);
+}
+
+export const getEditorContent = (confession: string) => {
+   if(!confession) return EditorState.createEmpty();
+
+   const rawContent = convertFromRaw(JSON.parse(confession));
+   return EditorState.createWithContent(rawContent);
 }

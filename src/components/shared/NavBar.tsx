@@ -23,7 +23,7 @@ export default function NavBar() {
    }
 
    return (
-      <div className="navbar bg-[#333346] mt-3 max-w-[1200px] mx-auto rounded-xl">
+      <div className="navbar bg-[#333346] mt-3 max-w-[1200px] mx-auto rounded-lg">
 
          <div className="flex-1">
             <Link to="/about" className="btn btn-ghost normal-case text-xl text-white">
@@ -58,7 +58,7 @@ export default function NavBar() {
 
                </label>
 
-               <ul tabIndex={0} className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
+               <ul tabIndex={0} className="mt-3 p-2 z-[1200] shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
 
                   <li><Link to="/">Home</Link></li>
                   <li className="sm:hidden"><Link to="/status">Check post status</Link></li>

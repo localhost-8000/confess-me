@@ -10,14 +10,17 @@ import {
    set } from "firebase/database";
 import { useDatabase } from "~/lib/firebase";
 import { generateEncodedStatusId, generateViolatingMessage } from "../postUtil";
+import { College } from "../CollegeData";
 
 
-export const createNewPost = async (newPost: Post) => {
+export const createNewPost = async (collegeData: College, confession: string) => {
    const db = useDatabase();
    const newPostKey = push(ref(db, 'adminPosts')).key;
 
    const postToBeModerated: PostWithStatus = {
-      ...newPost,
+      collegeData: collegeData,
+      confession: confession,
+      likesCount: 0,
       id: newPostKey as string,
       createdAt: Date.now().toString(),
       statusId: generateEncodedStatusId(newPostKey as string),
