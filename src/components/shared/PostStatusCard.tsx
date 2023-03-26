@@ -60,9 +60,9 @@ export default function PostStatusCard(props: PostCardType) {
          />
         </Box>
       </CardContent>
-      <CardActions disableSpacing>
+      <CardActions disableSpacing sx={{alignItems: "flex-start"}} className="flex flex-col gap-2 md:flex-row">
         <Chip label={post.status.toUpperCase()} color={getColor(post.status)} />
-        <Chip label={getMessage(post.status)} sx={{marginLeft: '6px'}} />
+        <Chip label={getMessage(post.status)} />
       </CardActions>
     </Card>
   );

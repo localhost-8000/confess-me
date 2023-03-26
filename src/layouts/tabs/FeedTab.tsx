@@ -32,7 +32,7 @@ export default function FeedTab() {
 
 
    return <>
-      <AppBar position="sticky" sx={{ bgcolor: '#71718c', borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}>
+      <AppBar position="sticky" sx={{ bgcolor: '#71718c', borderTopLeftRadius: '8px', borderTopRightRadius: '8px', zIndex: '11' }}>
          <TabIcons value={value} handleChangeCB={handleChange} />
       </AppBar>
       

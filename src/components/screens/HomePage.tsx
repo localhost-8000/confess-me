@@ -21,7 +21,7 @@ export default function HomePage() {
    return (
       <>
          <NavBar />
-         <div className="max-w-[1200px] mx-auto bg-[#333346] rounded-lg mt-6 md:mt-8">
+         <div className="max-w-[1200px] mx-auto bg-[#333346] rounded-lg mt-5 md:mt-6">
             <FeedTab />
          </div>
          <Footer />

@@ -15,7 +15,7 @@ export default function ExtraPageLayout(props: ExtraPageLayoutProps) {
             <Link to='/' className="text-xl font-semibold text-[#c1c1ee] absolute left-3"><KeyboardBackspaceIcon /> Home</Link>
             <h1 className="text-2xl font-bold text-[#c1c1ee]">{ props.title }</h1>
          </div>
-         <div className="max-w-[1200px] mx-auto bg-[#333346] rounded-xl mt-8 px-6 py-4 h-fit max-h-[calc(100vh-6.75rem)] overflow-y-scroll scroll-smooth scrollbar-thin scrollbar-track-[#b0b0d4] scrollbar-thumb-[#3e3e50] scrollbar-track-rounded-md scrollbar-thumb-rounded-md text-[#a5a5d2]">
+         <div className="max-w-[1200px] mx-auto bg-[#333346] rounded-xl mt-8 px-3 md:px-6 py-4 h-fit max-h-[calc(100vh-6.75rem)] overflow-y-scroll scroll-smooth scrollbar-thin scrollbar-track-[#b0b0d4] scrollbar-thumb-[#3e3e50] scrollbar-track-rounded-md scrollbar-thumb-rounded-md text-[#a5a5d2]">
             {props.children}
          </div>
          <Footer />

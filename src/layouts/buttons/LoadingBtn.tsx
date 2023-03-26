@@ -7,7 +7,8 @@ interface LoadingBtnProps {
    text: string;
    sx?: any;
    variant?: 'text' | 'outlined' | 'contained';
-   color?: AlertSeverity
+   color?: AlertSeverity;
+   disabled?: boolean;
 }
 
 export default function LoadingBtn(props: LoadingBtnProps) {
@@ -17,6 +18,7 @@ export default function LoadingBtn(props: LoadingBtnProps) {
       onClick={props.onClick}
       sx={props.sx}
       variant={props.variant || 'contained'}
+      disabled={props.disabled}
    >
       {props.text}
    </LoadingButton>
