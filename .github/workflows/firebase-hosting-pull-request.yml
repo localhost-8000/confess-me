@@ -11,6 +11,7 @@ env:
   VITE_FIREBASE_STORAGEBUCKET: ${{ secrets.VITE_FIREBASE_STORAGEBUCKET }}
   VITE_OPENAI_API_KEY: ${{ secrets.VITE_OPENAI_API_KEY }}
   VITE_ADMIN_UID: ${{ secrets.VITE_ADMIN_UID }}
+  VITE_ADMIN_PIN: ${{ secrets.VITE_ADMIN_PIN }}
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'

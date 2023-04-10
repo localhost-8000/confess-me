@@ -1,22 +1,10 @@
 import AdminPostCard from '../shared/AdminPostCard';
 import React from 'react'
 import { getAdminPosts } from '~/utils/firebaseUtils/adminUtil';
-import { useParams } from 'react-router-dom';
 import { Post } from '~/types/post';
 
 export default function AdminPanel() {
-   const { id } = useParams<{ id: string }>();
    const [posts, setPosts] = React.useState<Post[]>([]);
-
-   React.useEffect(() => {
-      const authenticate = () => {
-         if(id !== '991811') {
-            alert('You are not authorized to view this page');
-            window.location.href = '/';
-         }
-      }
-      authenticate();
-   }, [id]);
 
    React.useEffect(() => {
       const fetchAdminPosts = () => {

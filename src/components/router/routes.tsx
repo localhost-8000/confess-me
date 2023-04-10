@@ -1,8 +1,9 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
+import AdminAuthWrapper from "./AdminAuthWrapper";
 
 const About = lazy(() => import('~/components/screens/About'))
-const AdminPanel = lazy(() => import('~/components/screens/AdminPanel'));
+const AdminPanel = lazy(() => import('~/components/admin_panel/AdminPanel'));
 const DevelopersInfo = lazy(() => import('~/components/screens/DevelopersInfo'));
 const HomePage = lazy(() => import('~/components/screens/HomePage'));
 const LandingPage = lazy(() => import('~/components/screens/LandingPage'));
@@ -31,7 +32,7 @@ const BaseRoutes: RouteObject[] = [{
    element: <TermsOfUse />
 }, {
    path: '/admin/:id',
-   element: <AdminPanel />
+   element: <AdminAuthWrapper><AdminPanel /></AdminAuthWrapper>
 }, {
    path: '/post/:id',
    element: <PostView />

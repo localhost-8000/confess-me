@@ -14,6 +14,7 @@ env:
   VITE_FIREBASE_STORAGEBUCKET: ${{ secrets.VITE_FIREBASE_STORAGEBUCKET }}
   VITE_OPENAI_API_KEY: ${{ secrets.VITE_OPENAI_API_KEY }}
   VITE_ADMIN_UID: ${{ secrets.VITE_ADMIN_UID }}
+  VITE_ADMIN_PIN: ${{ secrets.VITE_ADMIN_PIN }}
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
