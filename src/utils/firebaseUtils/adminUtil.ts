@@ -1,8 +1,8 @@
-import { equalTo, get, limitToFirst, onValue, orderByChild, push, query, ref, remove, set, update } from "firebase/database";
+import { equalTo, get, limitToFirst, onValue, orderByChild, query, ref, remove, set, update } from "firebase/database";
 import { useDatabase } from "~/lib/firebase";
 import { Post, PostWithStatus } from "~/types/post";
 import { generateDecodedPostId } from "../postUtil";
-import { getPostById } from "./postUtil";
+import { getPostById } from "./common";
 
 // Load posts to reviewed by admin
 export const getAdminPosts = async () => {
@@ -37,9 +37,11 @@ export const approvePost = async (post: Post) => {
             collegeData: post.collegeData,
             confession: post.confession,
             createdAt: post.createdAt,
-            likesCount: post.likesCount,
+            likesCount: 0,
+            reportCounts: 0
          };
-         console.log(newPost)
+         if(post.isAdmin) newPost.isAdmin = true;
+
          set(newPostRef, newPost).then(() => {
             resolve('success');
          });

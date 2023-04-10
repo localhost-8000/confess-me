@@ -2,6 +2,9 @@ import AdminPostCard from '../shared/AdminPostCard';
 import React from 'react'
 import { getAdminPosts } from '~/utils/firebaseUtils/adminUtil';
 import { Post } from '~/types/post';
+import MaxWidthContainerLayout from '~/layouts/MaxWidthContainerLayout';
+import AccordianWrapper from '~/layouts/AccordianWrapper';
+import CreateConfession from '../post/CreateConfession';
 
 export default function AdminPanel() {
    const [posts, setPosts] = React.useState<Post[]>([]);
@@ -24,13 +27,19 @@ export default function AdminPanel() {
    }
 
    return (
-      <div className="max-w-[calc(100vw-100px)] mx-auto bg-[#333346] rounded-xl mt-8 px-2 py-4 h-fit max-h-[calc(100vh-6.75rem)] overflow-y-scroll scroll-smooth scrollbar-thin scrollbar-track-[#b0b0d4] scrollbar-thumb-[#3e3e50] scrollbar-track-rounded-md scrollbar-thumb-rounded-md">
-            <div className="w-[100%] flex flex-wrap">
-               {posts.map(post => (
-                  <AdminPostCard key={post.id} post={post} removePostCB={removePost}/>
-               ))}
-            </div>
-               <p className="text-white text-[18px] my-2">No more confessions🫡. Check back later!</p>
+      <MaxWidthContainerLayout>
+         <h1 className="text-white text-[24px] text-center">Admin Panel</h1>
+         <AccordianWrapper title="Create post">
+            <CreateConfession isAdmin={true} />
+         </AccordianWrapper>
+
+         <div className="w-[100%] flex flex-wrap">
+            {posts.map(post => (
+               <AdminPostCard key={post.id} post={post} removePostCB={removePost}/>
+            ))}
          </div>
+            <p className="text-white text-[18px] my-2">No more confessions🫡. Check back later!</p>
+
+      </MaxWidthContainerLayout>
    )
 }

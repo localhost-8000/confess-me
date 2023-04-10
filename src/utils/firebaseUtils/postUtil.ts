@@ -2,7 +2,6 @@ import { Post, PostWithStatus, TextModerationResult, TextModerationReturnType } 
 import { 
    endBefore,
    equalTo,
-   limitToFirst,
    limitToLast,
    onValue, 
    orderByChild, 
@@ -10,15 +9,14 @@ import {
    query, 
    ref, 
    runTransaction, 
-   set, 
-   startAfter, 
-   startAt} from "firebase/database";
+   set} from "firebase/database";
 import { useDatabase } from "~/lib/firebase";
 import { generateEncodedStatusId, generateViolatingMessage } from "../postUtil";
 import { College } from "../CollegeData";
+import { approvePost } from "./adminUtil";
 
 
-export const createNewPost = async (collegeData: College, confession: string) => {
+export const createNewPost = async (collegeData: College, confession: string, isAdmin?: boolean) => {
    const db = useDatabase();
    const newPostKey = push(ref(db, 'adminPosts')).key;
 
@@ -28,9 +26,14 @@ export const createNewPost = async (collegeData: College, confession: string) =>
       likesCount: 0,
       id: newPostKey as string,
       createdAt: Date.now().toString(),
-      statusId: generateEncodedStatusId(newPostKey as string),
+      statusId: isAdmin ? "" : generateEncodedStatusId(newPostKey as string),
       status: "pending",
       commentsCount: 0,
+   }
+
+   if(isAdmin) {
+      postToBeModerated.isAdmin = true;
+      return approvePost(postToBeModerated);
    }
 
    await new Promise(resolve => {
@@ -117,23 +120,6 @@ export const searchPosts = async (collegeName: string) => {
    return posts.reverse();
 }
 
-// fetch post by id
-export const getPostById = async (postId: string): Promise<Post | null> => {
-   const db = useDatabase();
-   const postRef = ref(db, `posts/${postId}`);
-
-   let result: Post | null = null;
-
-   await new Promise(resolve => {
-      onValue(postRef, (snapshot) => {
-         result = snapshot.val();
-         resolve(result);
-      }, { onlyOnce: true });
-   });
-
-   return result;
-}
-
 export const reportPost = async (postId: string, userId: string) => {
    const db = useDatabase();
    const postRef = ref(db, `posts/${postId}`);
@@ -167,6 +153,8 @@ export const reportPost = async (postId: string, userId: string) => {
 
 // Run test moderation api to check if the post contains any inappropriate content
 export const testModeration = async (confession: string): Promise<TextModerationReturnType> => {
+   if(import.meta.env.VITE_PROCESS_ENV === "development") return {isViolatingContent: false, message: ""};
+
    const openAIAPIKey = import.meta.env.VITE_OPENAI_API_KEY;
    const openAIUrl = "https://api.openai.com/v1/moderations";
 
@@ -191,6 +179,7 @@ export const testModeration = async (confession: string): Promise<TextModeration
          }
       })
       .catch(err => {
+         console.log('error')
          resolve({isViolatingContent: false, message: err.message, error: true})
       });
    });
