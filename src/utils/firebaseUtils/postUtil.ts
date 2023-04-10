@@ -1,13 +1,18 @@
 import { Post, PostWithStatus, TextModerationResult, TextModerationReturnType } from "~/types/post";
 import { 
+   endBefore,
    equalTo,
+   limitToFirst,
+   limitToLast,
    onValue, 
    orderByChild, 
    push, 
    query, 
    ref, 
    runTransaction, 
-   set } from "firebase/database";
+   set, 
+   startAfter, 
+   startAt} from "firebase/database";
 import { useDatabase } from "~/lib/firebase";
 import { generateEncodedStatusId, generateViolatingMessage } from "../postUtil";
 import { College } from "../CollegeData";
@@ -191,4 +196,21 @@ export const testModeration = async (confession: string): Promise<TextModeration
    });
    
    return promise;
+}
+
+export const getPaginatedPosts = async (limit: number, lastKey: string): Promise<Post[]> => {
+   const posts: Post[] = [];
+   const db = useDatabase();
+   const postsRef = query(ref(db, 'posts'), orderByChild('createdAt'), endBefore(lastKey), limitToLast(limit));
+
+   const result: Post[] = await new Promise(resolve => {
+      onValue(postsRef, (snapshot) => {
+         snapshot.forEach(childSnapshot => {
+            posts.push(childSnapshot.val());
+         });
+         resolve(posts);
+      }, { onlyOnce: true });
+   });
+
+   return result.reverse();
 }
