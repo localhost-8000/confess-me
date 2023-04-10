@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { Post } from '~/types/post';
 
 import { base64Decode } from '@firebase/util';
-import { getPostById } from '~/utils/firebaseUtils/postUtil';
+import { getPostById } from '~/utils/firebaseUtils/common';
 import { setupFirebase } from '~/lib/firebase';
 import { snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
 

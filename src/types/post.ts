@@ -16,6 +16,7 @@ export type Post = {
    createdAt?: string;
    reportCounts?: number;
    commentsCount?: number;
+   isAdmin?: boolean;
 }
 
 export type PostWithStatus = Post & PendingPostAttr;

@@ -16,7 +16,7 @@ import LoadingBtn from '~/layouts/buttons/LoadingBtn';
 import MaxWidthModal from '~/layouts/modals/MaxWidthModal';
 import TextBtn from '~/layouts/buttons/TextBtn';
 
-export default function CreateConfession() {
+export default function CreateConfession(props: {isAdmin?: boolean}) {
    const { dispatch } = useContext(AuthContext);
 
    const analytics = useAnalytics();
@@ -49,15 +49,27 @@ export default function CreateConfession() {
          return;
       }
       setLoading(true);
+
+      if(props.isAdmin) {
+         createNewPost(post.collegeData as College, post.confession, true).then(val => {
+            setLoading(false);
+            clearFields();
+            if(typeof val === "string") {
+               alert("post created.");
+            }
+         });
+         return;
+      }
       testModeration(post.confession).then(val => {
-         if(val.error || val.isViolatingContent) {
-            let msg = val.isViolatingContent ? (val.message || "Your confession contains some inappropriate content. Please remove it and try again") : "Something went wrong. Please try again later";
+         if(val.isViolatingContent) {
+            let msg = val.message || "Your post contains inappropriate content.";
             dispatch(snackBarDispatchMsg(msg, "error"));
             setLoading(false);
             return;
          }
 
          createNewPost(post.collegeData as College, post.confession).then(val => {
+            if(typeof val === "string") return;
             clearFields();
 
             logEvent(analytics, "create_post", {

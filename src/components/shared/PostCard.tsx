@@ -183,7 +183,7 @@ export default function PostCard(props: PostCardType) {
                <PostMenu anchorEl={anchorEl} handleCloseCB={closeMenu} reportPostCB={reportPostHandler} />
             </>
         }
-        title={post.collegeData?.name}
+        title={<PostTitle collegeName={post.collegeData?.name as string} isAdmin={post.isAdmin as boolean} />}
         subheader={formatTimeAgo(post.createdAt)}
         titleTypographyProps={{fontWeight: 'bold', color: '#333346', fontSize: '16px'}}
         subheaderTypographyProps={{color: '#333346'}}
@@ -214,4 +214,13 @@ export default function PostCard(props: PostCardType) {
       </Collapse>
     </Card>
   );
+}
+
+const PostTitle = (props: {collegeName: string, isAdmin: boolean}) => {
+   return (
+      <p>{props.collegeName}
+         {props.isAdmin ? <span className="bg-[#333346] text-white text-[12px] font-normal py-[2px] px-2    rounded-xl ml-1">Admin</span> 
+         : null}
+      </p>
+   )
 }
