@@ -198,7 +198,7 @@ export default function PostCard(props: PostCardType) {
             />
          </Box>
       </CardContent>
-      <CardActions disableSpacing sx={{display: 'flex', flexDirection: 'column', gap: 0.7}}>
+      <CardActions disableSpacing sx={{display: 'flex', flexDirection: 'column', padding: '6px', gap: post.tags?.length ? 0.7 : 0}}>
          <div className="w-full flex flex-wrap justify-start gap-1">
             <PostTags tags={post.tags} />
          </div>
@@ -216,7 +216,7 @@ export default function PostCard(props: PostCardType) {
             <LikeChip likesCount={currentPost.commentsCount || 0} isLiked={expandComment} likeHandlerCB={handleExpandComment} isCommentChip />
          </div>
       </CardActions>
-      <Collapse in={expandComment} timeout="auto" sx={{paddingBottom: '12px'}}>
+      <Collapse in={expandComment} timeout="auto" sx={{paddingBottom: expandComment ? '10px' : 0}}>
          <Divider sx={{width: '80%', maxWidth: '301px', margin: 'auto', borderColor: '#6d6d8659'}} />
          <Comment postId={post.id} handleCloseCommentsCB={() => setExpandComment(false)} />
       </Collapse>
