@@ -1,14 +1,13 @@
 import { logEvent } from 'firebase/analytics';
 import { useContext, useEffect, useState} from 'react'
 import { useAnalytics } from '~/lib/firebase';
-import { AddOrUpdateFlag } from '~/types/extra';
+
 import { Post } from '~/types/post';
 import { snackBarDispatchMsg } from '~/utils/dispatchActionsUtil';
 import { getAllPosts } from '~/utils/firebaseUtils/postUtil';
 import { sortByMostRecent } from '~/utils/postUtil';
 import { AuthContext } from '../contexts/AuthContext';
-import PostCard from '../shared/PostCard';
-import ShortLoading from '../shared/ShortLoading';
+
 import Feed from './Feed';
 
 export default function HomeFeed() {

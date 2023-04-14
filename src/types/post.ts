@@ -17,6 +17,7 @@ export type Post = {
    reportCounts?: number;
    commentsCount?: number;
    isAdmin?: boolean;
+   tags?: Tag[];
 }
 
 export type PostWithStatus = Post & PendingPostAttr;
@@ -44,3 +45,5 @@ export type PostComment = {
    authorPhotoUrl: string;
    createdAt: string;
 }
+
+export type Tag = "college" | "confession" | "farewell" | "farewell2023" | "friendship" | "love" | "shayari";

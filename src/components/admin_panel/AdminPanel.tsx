@@ -1,10 +1,12 @@
-import AdminPostCard from '../shared/AdminPostCard';
-import React from 'react'
 import { getAdminPosts } from '~/utils/firebaseUtils/adminUtil';
 import { Post } from '~/types/post';
-import MaxWidthContainerLayout from '~/layouts/MaxWidthContainerLayout';
+
 import AccordianWrapper from '~/layouts/AccordianWrapper';
+import AdminPostCard from '../shared/AdminPostCard';
 import CreateConfession from '../post/CreateConfession';
+import MaxWidthContainerLayout from '~/layouts/MaxWidthContainerLayout';
+import React from 'react';
+
 
 export default function AdminPanel() {
    const [posts, setPosts] = React.useState<Post[]>([]);

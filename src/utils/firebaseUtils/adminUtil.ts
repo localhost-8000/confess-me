@@ -38,8 +38,9 @@ export const approvePost = async (post: Post) => {
             confession: post.confession,
             createdAt: post.createdAt,
             likesCount: 0,
-            reportCounts: 0
+            reportCounts: 0,
          };
+         if(post.tags) newPost.tags = post.tags;
          if(post.isAdmin) newPost.isAdmin = true;
 
          set(newPostRef, newPost).then(() => {

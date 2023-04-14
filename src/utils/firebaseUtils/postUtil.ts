@@ -1,4 +1,4 @@
-import { Post, PostWithStatus, TextModerationResult, TextModerationReturnType } from "~/types/post";
+import { Post, PostWithStatus, Tag, TextModerationResult, TextModerationReturnType } from "~/types/post";
 import { 
    endBefore,
    equalTo,
@@ -16,7 +16,7 @@ import { College } from "../CollegeData";
 import { approvePost } from "./adminUtil";
 
 
-export const createNewPost = async (collegeData: College, confession: string, isAdmin?: boolean) => {
+export const createNewPost = async (collegeData: College, confession: string, tags: Tag[], isAdmin?: boolean) => {
    const db = useDatabase();
    const newPostKey = push(ref(db, 'adminPosts')).key;
 
@@ -30,7 +30,8 @@ export const createNewPost = async (collegeData: College, confession: string, is
       status: "pending",
       commentsCount: 0,
    }
-
+   
+   if(tags) postToBeModerated.tags = tags;
    if(isAdmin) {
       postToBeModerated.isAdmin = true;
       return approvePost(postToBeModerated);
