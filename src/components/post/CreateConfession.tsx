@@ -10,11 +10,14 @@ import { AuthContext } from '../contexts/AuthContext';
 import { College } from '~/utils/CollegeData';
 import {TextEditor} from './TextEditor';
 import { Paper } from '@mui/material';
+import { SelectChangeEvent } from '@mui/material/Select';
 
 import AutoCompleteWrapper from '~/layouts/textfield/AutoCompleteWrapper';
 import LoadingBtn from '~/layouts/buttons/LoadingBtn';
 import MaxWidthModal from '~/layouts/modals/MaxWidthModal';
 import TextBtn from '~/layouts/buttons/TextBtn';
+import TagInput from './TagInput';
+import { Tag } from '~/types/post';
 
 export default function CreateConfession(props: {isAdmin?: boolean}) {
    const { dispatch } = useContext(AuthContext);
@@ -30,6 +33,7 @@ export default function CreateConfession(props: {isAdmin?: boolean}) {
    const [post, setPost] = useState<MinPost>({
       collegeData: null,
       confession: '',
+      tags: []
    });
 
    const changeEditorState = (editorState: EditorState) => {
@@ -38,6 +42,14 @@ export default function CreateConfession(props: {isAdmin?: boolean}) {
       setPost({
          ...post,
          confession: JSON.stringify(rawContent)
+      });
+   }
+
+   const handleTagChange = (event: SelectChangeEvent<Tag[]>): void => {
+      const {target: { value }} = event;
+      setPost({
+         ...post,
+         tags: typeof value === 'string' ? value.split(',') as Tag[] : value,
       });
    }
 
@@ -51,7 +63,7 @@ export default function CreateConfession(props: {isAdmin?: boolean}) {
       setLoading(true);
 
       if(props.isAdmin) {
-         createNewPost(post.collegeData as College, post.confession, true).then(val => {
+         createNewPost(post.collegeData as College, post.confession, post.tags, true).then(val => {
             setLoading(false);
             clearFields();
             if(typeof val === "string") {
@@ -68,7 +80,7 @@ export default function CreateConfession(props: {isAdmin?: boolean}) {
             return;
          }
 
-         createNewPost(post.collegeData as College, post.confession).then(val => {
+         createNewPost(post.collegeData as College, post.confession, post.tags).then(val => {
             if(typeof val === "string") return;
             clearFields();
 
@@ -89,6 +101,7 @@ export default function CreateConfession(props: {isAdmin?: boolean}) {
       setPost({
          collegeData: null,
          confession: '',
+         tags: []
       });
       setEditorState(EditorState.createEmpty());
    }
@@ -115,6 +128,8 @@ export default function CreateConfession(props: {isAdmin?: boolean}) {
                ref={editorRef}
             />
          </div>
+
+         <TagInput tagName={post.tags} handleChangeCB={handleTagChange} />
 
          <div className="flex mt-4 items-center justify-end">
             <LoadingBtn 
@@ -147,4 +162,5 @@ type InfoModal = {
 type MinPost = {
    collegeData: College | null;
    confession: string;
+   tags: Tag[];
 }

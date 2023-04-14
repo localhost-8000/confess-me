@@ -1,9 +1,10 @@
-import React from 'react'
+import { formatTimeAgo } from '~/utils/dateParser';
 import { Avatar } from '@mui/material';
+import { PostComment } from '~/types/post';
+
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import { PostComment } from '~/types/post';
-import { formatTimeAgo } from '~/utils/dateParser';
+
 
 interface CommentCardProps {
    comment: PostComment;
@@ -12,7 +13,7 @@ interface CommentCardProps {
 export default function CommentCard(props: CommentCardProps) {
    const { authorName, authorPhotoUrl, comment, createdAt } = props.comment;
    return (
-      <div className="pt-3">
+      <div className="pt-1">
          <CardHeader
             avatar={
                <Avatar 

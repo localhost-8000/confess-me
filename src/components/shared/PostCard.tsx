@@ -31,6 +31,7 @@ import PostMenu from './PostMenu';
 import React from 'react';
 import ShareIcon from '@mui/icons-material/Share';
 import ToolTip from '~/layouts/tooltips/ToolTip';
+import PostTags from '../post/PostTags';
 
 
 interface PostCardType {
@@ -197,16 +198,23 @@ export default function PostCard(props: PostCardType) {
             />
          </Box>
       </CardContent>
-      <CardActions disableSpacing>
-         <LikeChip likesCount={currentPost.likesCount} isLiked={userLikes} likeHandlerCB={postLikeHandler} />
-         {isAdminLikes ? <NormalChip title="Admin loved it" /> : null}
-         <IconButton 
-            aria-label="share" 
-            sx={{marginLeft: '8px'}} 
-            onClick={sharePost}>
-               <ShareIcon />
-            </IconButton>
-         <LikeChip likesCount={currentPost.commentsCount || 0} isLiked={expandComment} likeHandlerCB={handleExpandComment} isCommentChip />
+      <CardActions disableSpacing sx={{display: 'flex', flexDirection: 'column', gap: 0.7}}>
+         <div className="w-full flex flex-wrap justify-start gap-1">
+            <PostTags tags={post.tags} />
+         </div>
+         <div className="w-full flex justify-around items-center">
+            <div className="">
+               <LikeChip likesCount={currentPost.likesCount} isLiked={userLikes} likeHandlerCB={postLikeHandler} />
+               {isAdminLikes ? <NormalChip title="Admin loved it" withIcon={true} /> : null}
+               <IconButton 
+                  aria-label="share" 
+                  sx={{marginLeft: '8px'}} 
+                  onClick={sharePost}>
+                     <ShareIcon />
+                  </IconButton>
+            </div>
+            <LikeChip likesCount={currentPost.commentsCount || 0} isLiked={expandComment} likeHandlerCB={handleExpandComment} isCommentChip />
+         </div>
       </CardActions>
       <Collapse in={expandComment} timeout="auto" sx={{paddingBottom: '12px'}}>
          <Divider sx={{width: '80%', maxWidth: '301px', margin: 'auto', borderColor: '#6d6d8659'}} />
