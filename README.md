@@ -8,7 +8,8 @@
   </strong>
  </p>
  
-## About the Project
+## About the Project   
+[Live link](https://confess-me-deede.web.app/)
 
 Confess Website is a platform designed to provide users with a safe and anonymous space to share their secret crushes and confessions. It aims to foster a supportive community where users can express their feelings without fear of judgment. The project offers the following features:
 
