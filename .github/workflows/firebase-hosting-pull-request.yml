@@ -12,7 +12,7 @@ env:
   VITE_OPENAI_API_KEY: ${{ secrets.VITE_OPENAI_API_KEY }}
   VITE_ADMIN_UID: ${{ secrets.VITE_ADMIN_UID }}
   VITE_ADMIN_PIN: ${{ secrets.VITE_ADMIN_PIN }}
-  VITE_PROCESS_ENV: ${{ vars.VITE_PROCESS_ENV }}
+  VITE_PROCESS_ENV: ${{ vars.VITE_DEV_PROCESS_ENV }}
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
