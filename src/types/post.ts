@@ -46,4 +46,4 @@ export type PostComment = {
    createdAt: string;
 }
 
-export type Tag = "college" | "confession" | "farewell" | "farewell2023" | "friendship" | "love" | "shayari";
+export type Tag = "college" | "confession" | "farewell" | "friendship" | "love" | "shayari" | "breakup" | "cutie" | "soulmate";
