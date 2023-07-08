@@ -1,103 +1,63 @@
-# ⚡ confess-me
+<p align="center">
+  <a href="https://ancorenotes.com">
+    <img src="https://github.com/localhost-8000/confess-me/assets/72190915/6e330caf-2a33-4778-8698-e059ecc9f882" alt="Logo" width="256" height="256">
+  </a>
 
+  <strong>
+    <h1 align="center" >⚡Confess-Me</h1>
+  </strong>
+ </p>
+ 
+## About the Project   
+[Live link](https://confess-me-deede.web.app/)
 
-## Motivation
+Confess Website is a platform designed to provide users with a safe and anonymous space to share their secret crushes and confessions. It aims to foster a supportive community where users can express their feelings without fear of judgment. The project offers the following features:
 
-- Vite
-- React
-  - React Router
-- TypeScript
-- Tailwind CSS
-  - daisyUI
--Material UI
-- Firebase(v9, modular)
-- ESLint
-- Prettier
-
-## Set up
-
-```shell
-mv .env.local.example .env.local
-yarn
-yarn dev
-```
-
-### Firebase
-
-If you **DO NOT** use Firebase, you should do:
-
-- Delete the Firebase-related code: you check Main.tsx, SignInButton.tsx, SignOutButton.tsx.
-- And then delete `src/lib/firebase.ts`
-- Run `yarn remove firebase`
-- Remove `VITE_FIREBASE_*` env values from `.env.local`
-
-If you want to use Firebase, you should do:
-
-- copy Firebase env values from Firebase Console, and paste them to `.env.local`.
-- enable Google Auth in Firebase Console. ref: https://firebase.google.com/docs/auth/web/google-signin#before_you_begin
-
-## Vite
-
-[Vite](https://github.com/vitejs/vite) is a fast frontend build tool. According to the [README](https://github.com/vitejs/vite/blob/main/README.md), it consists of two major parts:
-
-- A dev server that serves your source files over native ES modules, with rich built-in features and astonishingly fast Hot Module Replacement (HMR).
-- A build command that bundles your code with Rollup, pre-configured to output highly optimized static assets for production.
-
-## React
-
-[React](https://github.com/facebook/react) is a JavaScript library for building user interfaces.
-
-Due to its awesome renderer system, there are many [React Renderor](https://github.com/chentsulin/awesome-react-renderer). So React can be not used only Web, for example, used by [React Native](https://reactnative.dev/).
-
-Let's dive into React and Vite can use with React.
-
-## TypeScript
-
-[TypeScript](https://github.com/microsoft/TypeScript) is a superset of JavaScript. It is just one of NPM library, but it provides an original compiler.
-
-When you use TypeScript with React, you can write JSX with TypeScript, called TSX. Then you can develop views written by  **Type-Safe** template.
-
-## Tailwind CSS
-
-[Tailwind CSS](https://tailwindcss.com/) is modern utility-first CSS framework. It provides many CSS rules, but these are purged when production builds. So developers do not worry about CSS asset size for performance optimization.
-
-In VSCode, I recommend to use [intellisense extension](https://tailwindcss.com/docs/intellisense).
-
-Frequently, React developers are worried about how to write CSS in TSX(JSX) template. You must choose from CSS Modules, [styled-components](https://styled-components.com/), [linaria](https://github.com/callstack/linaria), and so on.
-Additionally, CSS architecture is difficult about scoping, e.g. BEM, FLOCSS.
-
-When you decide to use Tailwind, you only write utility-first CSS classes, you don't have to worry about them!
-
-### daisyUI
-
-[daisyUI](https://daisyui.com/) is Tailwind CSS Components library.
-
-It prepares components CSS classes such as 'btn'. If you provide 'btn' class to `<button>` element, then there should be placed completely designed button.
-
-If you don't want to use it, just remove the package and remove config in `tailwind.config.js`.
-
-## Firebase
-
-[Firebase](https://firebase.google.com/) is a PaaS that makes us create hi-quality apps so easy and so fast.
-
-This library is not suitable for everyone, but I think it is one of the best libraries for prototyping. Therefore, I have added it to this repository.
-
-The Firebase js SDK has become very useful in version 9, with [optimizations that greatly reduce bundle size](https://firebase.google.com/docs/web/modular-upgrade).
-
-### How to Use
-
-Please look at [firebase.ts](https://github.com/TeXmeijin/vite-react-ts-tailwind-starter/blob/main/src/lib/firebase.ts).
-
-There you will find a set of utility functions to manipulate Firebase for the environment in which the Emulator is used.
-
-## Formatter and Linter
-
-Already set up [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/). You can customize the rules.
-
-NOTICE: The template does not use [eslint-plugin-prettier](https://github.com/prettier/eslint-plugin-prettier) and [prettier-eslint](https://github.com/prettier/prettier-eslint). So I recommend that running commands individually. e.g. `prettier && eslint`.
-
-Please read: https://prettier.io/docs/en/integrating-with-linters.html.
+- **Anonymous Confessions**: Users can post their confessions without revealing their identity, ensuring privacy and confidentiality.
+- **User Authentication**: Sign-up and login functionality allows users to securely engage with the platform and interact with other posts.
+- **Real-time Confession Feed**: Confessions are displayed in real-time, providing an up-to-date feed for users to explore and engage with.
+- **Post Interaction**: Users can like, comment on, and report posts, fostering community interaction and moderation.
+- **Trending Confessions**: The trending section highlights the most popular confessions based on likes, enabling users to discover engaging content.
+- **Search and Tagging**: Users can search for specific confessions or explore posts based on relevant tags, enhancing discoverability. 
 
 ---
+![ss-web4](https://github.com/localhost-8000/confess-me/assets/72190915/32e54cfc-3b29-4c4c-805f-e61a4fb65ab2)
 
-### Support me!
+![ss-web1](https://github.com/localhost-8000/confess-me/assets/72190915/91da299d-8273-458e-9583-cdae9c7c2c1f)
+
+![ss-web2](https://github.com/localhost-8000/confess-me/assets/72190915/ecca1ea1-3142-4de1-aaf4-a3cbe1d725ee)
+
+![ss-web3](https://github.com/localhost-8000/confess-me/assets/72190915/ebaf5117-8619-4c9f-bd42-a004ad34baa8)
+
+
+## Technologies Used
+
+- **Front-end**: React, TypeScript, HTML, Tailwind CSS
+- **Back-end**: Firebase Realtime Database
+- **Authentication**: Firebase Authentication
+- **Deployment**: Firebase Hosting
+
+Build on top of **Vite** to provide fast dev server boostup and code bundling with Rollup, pre-configured to output highly optimized static assets for production
+
+## Getting Started
+
+To run the Confess Website locally, follow these steps:
+
+1. Clone the repository: `git clone https://github.com/localhost-8000/confess-me.git`
+2. Install dependencies: `npm install`
+3. Move env file: `mv .env.local.example .env.local`
+4. Start the development server: `npm start` or `npm run dev`
+
+Make sure to set up the necessary Firebase configurations in the project.
+
+## Contributing
+
+Contributions to Confess Website are welcome! If you'd like to contribute, please follow these guidelines:
+
+- Fork the repository and create a new branch.
+- Make your changes and test thoroughly.
+- Submit a pull request, describing the changes you've made.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
