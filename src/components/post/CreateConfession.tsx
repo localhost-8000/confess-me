@@ -14,7 +14,6 @@ import { SelectChangeEvent } from '@mui/material/Select';
 
 import AutoCompleteWrapper from '~/layouts/textfield/AutoCompleteWrapper';
 import LoadingBtn from '~/layouts/buttons/LoadingBtn';
-import MaxWidthModal from '~/layouts/modals/MaxWidthModal';
 import TextBtn from '~/layouts/buttons/TextBtn';
 import TagInput from './TagInput';
 import { Tag } from '~/types/post';
@@ -25,7 +24,6 @@ export default function CreateConfession(props: { isAdmin?: boolean }) {
   const analytics = useAnalytics();
   const editorRef = useRef<Editor>(null);
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
-  const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [post, setPost] = useState<MinPost>({
     collegeData: null,
@@ -139,17 +137,6 @@ export default function CreateConfession(props: { isAdmin?: boolean }) {
         />
         <TextBtn color="warning" onClickCB={clearFields} text="Clear" />
       </div>
-
-      <MaxWidthModal
-        title="Your post is submitted."
-        open={infoModalOpen}
-        handleCloseCB={() => setInfoModalOpen(false)}
-      >
-        Thank you for submitting your confession! Your post is being verified and will start reflecting on feed within few minutes.
-        <br /> <br />
-        Regards,<br />
-        Confess-Me Team
-      </MaxWidthModal>
     </Paper>
   );
 }
