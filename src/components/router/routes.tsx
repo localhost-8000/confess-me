@@ -37,9 +37,6 @@ const BaseRoutes: RouteObject[] = [{
    path: '/post/:id',
    element: <PostView />
 }, {
-   path: '/status',
-   element: <PostStatus />
-} ,{
    path: '*',
    element: <Page404Screen />,
 }];
